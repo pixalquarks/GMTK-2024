@@ -16,17 +16,17 @@ namespace GMTK_2024
         [SerializeField] private Transform pointsTo;
         [SerializeField] private RectTransform pointerRectTransform;
         [SerializeField] private RectTransform indiactorRectTransform;
+        [SerializeField] private float border = 100f;
 
-        private float radialDistanceBetweenPointerAndIndicator;
+        private RectTransform _rectTransform;
+        private Camera _mainCamera;
+
         private void Awake()
         {
             _mainCamera = Camera.main;
-
-            radialDistanceBetweenPointerAndIndicator = Vector2.Distance(pointerRectTransform.position, indiactorRectTransform.position);
+            _rectTransform = GetComponent<RectTransform>();
         }
 
-        private Camera _mainCamera;
-        [SerializeField] private float border = 100f;
 
         private void Update()
         {
@@ -36,7 +36,7 @@ namespace GMTK_2024
             var dir = (toPosition - fromPosition).normalized;
             var angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
 
-            pointerRectTransform.localEulerAngles = new Vector3(0f, 0f, angle);
+            _rectTransform.localEulerAngles = new Vector3(0f, 0f, angle);
 
             var targetPositionScreenPoint = _mainCamera.WorldToScreenPoint(toPosition);
 
@@ -49,10 +49,8 @@ namespace GMTK_2024
                 var cappedPosition = new Vector3(Mathf.Clamp(targetPositionScreenPoint.x, border, Screen.width - border), Mathf.Clamp(targetPositionScreenPoint.y, border, Screen.height - border), border);
 
                 var pointToWorldPosition = _mainCamera.ScreenToWorldPoint(cappedPosition);
-                pointerRectTransform.position = pointToWorldPosition;
-                indiactorRectTransform.position = pointToWorldPosition - CalculateOffsetBetweenPointerAndIndicator(angle);
-                pointerRectTransform.localPosition = new Vector3(pointerRectTransform.localPosition.x, pointerRectTransform.localPosition.y, 0f);
-                indiactorRectTransform.localPosition = new Vector3(indiactorRectTransform.localPosition.x, indiactorRectTransform.localPosition.y, 0f);
+                _rectTransform.position = pointToWorldPosition - CalculateOffsetBetweenPointerAndIndicator(angle);
+                _rectTransform.localPosition = new Vector3(_rectTransform.localPosition.x, _rectTransform.localPosition.y, 0f);
             }
             else
             {
@@ -68,6 +66,7 @@ namespace GMTK_2024
 
         private Vector3 CalculateOffsetBetweenPointerAndIndicator(float angle)
         {
+            var radialDistanceBetweenPointerAndIndicator = Vector2.Distance(pointerRectTransform.position, indiactorRectTransform.position);
             var offsetX = radialDistanceBetweenPointerAndIndicator * Mathf.Cos(angle * Mathf.Deg2Rad);
             var offsetY = radialDistanceBetweenPointerAndIndicator * Mathf.Sin(angle * Mathf.Deg2Rad);
             return new Vector3(offsetX, offsetY, 0);
