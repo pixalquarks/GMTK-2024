@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class Employee : MonoBehaviour
 {
+    #region constants
+    public const int MAX_LEVEL = 3;
+    #endregion
+
     #region stats
     //Initial stats
     //should not be changed during gameplay, only by EmployeeGenerator
-    [Header("Initial Stats")]
     public string displayName = "";
     public EmployeeRole role = EmployeeRole.Programmer;
+    public EmployeeType type;
     public EmployeeSkillset baseSkillset;
     public int baseSalary = 600;
     public EmployeeTrait mainTrait, subTrait;
@@ -47,5 +51,24 @@ public class Employee : MonoBehaviour
     {
         int multiplier = _level == 3 ? 5 : _level == 2 ? 2 : 1;
         return multiplier * baseSalary;
+    }
+
+    public int GetRequiredExp()
+    {
+        return 100 + (200 <<  _level);
+    }
+
+    public void UpdateQuarter()
+    {
+        GameManager.main.RemoveMoney(GetSalary());
+        //todo trigger trait
+    }
+
+    private void LevelUp()
+    {
+        _exp = 0;
+        _level++;
+        _skillPoints += 3;
+        GameManager.main.RecalculateSalary();
     }
 }
