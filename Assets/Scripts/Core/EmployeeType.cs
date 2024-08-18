@@ -10,4 +10,11 @@ public class EmployeeType : ScriptableObject
     public Color color = Color.gray;
 
     public Genre strongGenre, weakGenre;
+
+    public float GetGenreBonus(Genre genre)
+    {
+        if (genre == strongGenre) return 1;
+        if (genre == weakGenre) return -1;
+        return 0;
+    }
 }
