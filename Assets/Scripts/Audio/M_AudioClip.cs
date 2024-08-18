@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace CozyChaosSpring2024
+namespace GMTK_2024
 {
     public enum ClipType
     {

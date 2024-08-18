@@ -5,10 +5,9 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using DG.Tweening;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
-namespace CozyChaosSpring2024
+namespace GMTK_2024
 {
     public class AudioManager : MonoBehaviour
     {
