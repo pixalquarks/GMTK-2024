@@ -65,6 +65,34 @@ public class ProjectRenderer : MonoBehaviour
         UpdateDegredation();
     }
 
+    public Transform GetSlotParent(int i)
+    {
+        return slots[i].employeeParent;
+    }
+
+    public void SortEmployees()
+    {
+        //pain
+        for (int i = 0; i < project.employees.Count; i++)
+        {
+            project.employees[i].transform.SetParent(GetSlotParent(i), false);
+            project.employees[i].transform.localPosition = Vector3.zero;
+        }
+    }
+
+    /// <summary>
+    /// Returns an employee in the given range
+    /// </summary>
+    public Employee AttemptCastEmployee(Vector3 pos, float distance)
+    {
+        float d2 = distance * distance;
+        foreach (var e in project.employees)
+        {
+            if ((e.transform.position - pos).sqrMagnitude < d2) return e;
+        }
+        return null;
+    }
+
     public void Rebuild()
     {
         genreIcon.sprite = project.genre.icon;

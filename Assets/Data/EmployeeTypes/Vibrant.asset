@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Vibrant
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
-  color: {r: 1, g: 0.5529412, b: 0.9351626, a: 1}
+  color: {r: 0.9817475, g: 0.4669811, b: 1, a: 1}
   strongGenre: {fileID: 11400000, guid: 52991a0e2d813b64f921cdc87b8e9827, type: 2}
   weakGenre: {fileID: 11400000, guid: 278416ccc5b2a8449b302dd3e884e6bb, type: 2}

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Aggressive
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
-  color: {r: 1, g: 0.5529412, b: 0.5755078, a: 1}
+  color: {r: 1, g: 0.43867922, b: 0.5477196, a: 1}
   strongGenre: {fileID: 11400000, guid: 6b3176a37f77e8244a1114493f7fac1a, type: 2}
   weakGenre: {fileID: 11400000, guid: 144f6389672682c47b83fdd356ce1435, type: 2}

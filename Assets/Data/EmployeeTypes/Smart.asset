@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Smart
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
-  color: {r: 0.5529412, g: 0.8762238, b: 1, a: 1}
+  color: {r: 0.5529412, g: 1, b: 0.98267287, a: 1}
   strongGenre: {fileID: 11400000, guid: 144f6389672682c47b83fdd356ce1435, type: 2}
   weakGenre: {fileID: 11400000, guid: 52991a0e2d813b64f921cdc87b8e9827, type: 2}

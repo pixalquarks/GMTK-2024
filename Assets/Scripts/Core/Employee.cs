@@ -68,7 +68,7 @@ public class Employee : MonoBehaviour
 
     private void Start()
     {
-        rigid.bodyType = RigidbodyType2D.Static;
+        rigid.bodyType = RigidbodyType2D.Dynamic;
     }
 
     public int GetSalary()

@@ -1073,6 +1073,7 @@ GameObject:
   - component: {fileID: 7984429962697191832}
   - component: {fileID: 7141408294071889218}
   - component: {fileID: 3015314864305105334}
+  - component: {fileID: 4657148681303928560}
   m_Layer: 8
   m_Name: EmployeeSlots
   m_TagString: Untagged
@@ -1182,6 +1183,19 @@ MonoBehaviour:
   m_Spacing: {x: 5, y: 5}
   m_Constraint: 1
   m_ConstraintCount: 3
+--- !u!114 &4657148681303928560
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2631158724798849511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: deeece169595603478ea129efa1f45a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  project: {fileID: 7576509485234773655}
 --- !u!1 &2701392143422200223
 GameObject:
   m_ObjectHideFlags: 0
@@ -1330,6 +1344,7 @@ GameObject:
   - component: {fileID: 5740680532582453293}
   - component: {fileID: 4100447757917953131}
   - component: {fileID: 7871344173068341253}
+  - component: {fileID: 518156864669070753}
   m_Layer: 6
   m_Name: BG
   m_TagString: Untagged
@@ -1473,6 +1488,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rect: {fileID: 9095480015905011499}
   col: {fileID: 4100447757917953131}
+--- !u!114 &518156864669070753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2993314425423211028}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: deeece169595603478ea129efa1f45a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  project: {fileID: 7576509485234773655}
 --- !u!1 &5344584417978418683
 GameObject:
   m_ObjectHideFlags: 0

@@ -81,6 +81,7 @@ public class GameManager : MonoBehaviour
     public void RecruitEmployee(Employee employee)
     {
         employees.Add(employee);
+        employee.OnRecruited();
         RecalculateSalary();
     }
 
@@ -89,6 +90,7 @@ public class GameManager : MonoBehaviour
         //note: employee must be removed from project before firing!
         if(employee.project is not null) employee.project.RemoveEmployee(employee);
         employees.Remove(employee);
+        employee.OnFired();
         RecalculateSalary();
     }
 
