@@ -2,8 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EmployeeTrait
+public class EmployeeTrait : ScriptableObject
 {
-    public string name;
     //todo
+    public bool mainTraitOnly = false;
 }

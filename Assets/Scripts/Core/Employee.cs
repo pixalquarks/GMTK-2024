@@ -1,12 +1,17 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Employee : MonoBehaviour
 {
     #region constants
     public const int MAX_LEVEL = 3;
+    public const int SP_PER_LEVEL = 3;
     #endregion
+
+    public Rigidbody2D rigid;
 
     #region stats
     //Initial stats
@@ -14,14 +19,14 @@ public class Employee : MonoBehaviour
     public string displayName = "";
     public EmployeeRole role = EmployeeRole.Programmer;
     public EmployeeType type;
-    public EmployeeSkillset baseSkillset;
+    [System.NonSerialized] [ShowInInspector, ReadOnly] public EmployeeSkillset baseSkillset;
     public int baseSalary = 600;
     public EmployeeTrait mainTrait, subTrait;
     #endregion
 
     #region vars
     //changes during gameplay
-    private int level = 1;
+    [ShowInInspector, ReadOnly] private int level = 1;
     private int skillPoints = 0;
     private int exp = 0;
 
@@ -32,6 +37,7 @@ public class Employee : MonoBehaviour
     [System.NonSerialized] public Project project;
 
     private bool _isFirstQuarter = false;
+    private bool _employed = false;
 
     public enum EmployeeRole
     {
@@ -44,6 +50,7 @@ public class Employee : MonoBehaviour
     public int Level => level;
     public int SkillPoints => skillPoints;
     public int Exp => exp;
+    public bool Employed => _employed;
 
     //skillsets
     public float SkillAbility => baseSkillset.ability + calculatedSkillBonus.ability;
@@ -52,6 +59,17 @@ public class Employee : MonoBehaviour
     public float SkillCooperation => baseSkillset.cooperation + calculatedSkillBonus.cooperation;
     public float SkillPotential => baseSkillset.potential + calculatedSkillBonus.potential;
     #endregion
+
+    #region events
+    public LevelUpEvent onLevelUp = new();
+
+    [System.Serializable] public class LevelUpEvent : UnityEvent { }
+    #endregion
+
+    private void Start()
+    {
+        rigid.bodyType = RigidbodyType2D.Dynamic;
+    }
 
     public int GetSalary()
     {
@@ -66,13 +84,14 @@ public class Employee : MonoBehaviour
 
     public void OnRecruited()
     {
-        GameManager.main.RemoveMoney(GetSalary());
+        GameManager.main.RemoveMoney(baseSalary);
         _isFirstQuarter = true;//already paid for this quarter
+        _employed = true;
     }
 
     public void OnFired()
     {
-
+        _employed = false;
     }
 
     public void OnProjectJoined()
@@ -90,15 +109,41 @@ public class Employee : MonoBehaviour
         if(!_isFirstQuarter) GameManager.main.RemoveMoney(GetSalary());
         else _isFirstQuarter = false;
         //todo trigger trait
+
+        if(project is not null)
+        {
+            if(project.Status == Project.ProjectStatus.Development)
+            {
+                AddExp(Mathf.RoundToInt(70f * (1f + (project.requiredLoad - 3f) / 3f)));
+            }
+            else if(project.Status == Project.ProjectStatus.Release)
+            {
+                AddExp(Mathf.RoundToInt(40f * (1f + (project.requiredLoad - 3f) / 3f)));
+            }
+        }
+    }
+
+    public void AddExp(int amount)
+    {
+        if (level >= MAX_LEVEL) return;
+        exp += amount;
+        if (exp >= GetRequiredExp()) LevelUp();
+    }
+
+    public void SetLevel(int l)
+    {
+        level = l;
     }
 
     private void LevelUp()
     {
         exp = 0;
         level++;
-        skillPoints += 3;
+        skillPoints += SP_PER_LEVEL;
         GameManager.main.RecalculateSalary();
         CalculateSkillBonus();
+
+        onLevelUp.Invoke();
     }
 
     private void CalculateSkillBonus()
@@ -132,5 +177,10 @@ public class Employee : MonoBehaviour
         {
             project.RecalculateLoad();
         }
+    }
+
+    public float GetLoad()
+    {
+        return 1 + SkillAbility * 0.1f;
     }
 }

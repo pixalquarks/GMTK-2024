@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,13 +10,13 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public static GameManager main;
 
-    private int money = 10000;
-    private int quarter = 1;
+    [SerializeField] private int money = 10000;
+    [SerializeField] private int quarter = 1;
 
     //game time. Different from global time.
-    private bool playing = true;
-    private bool cutscene = false;
-    private float timeScale = 1f;
+    [ShowInInspector] private bool playing = true;
+    [ShowInInspector] private bool cutscene = false;
+    [ShowInInspector] private float timeScale = 1f;
 
     //do not modify directly
     public List<Project> projects = new();
@@ -25,8 +26,8 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Calculated quarterly salary estimate. Is not guaranteed to equal actual money consumption.
     /// </summary>
-    public int quarterlySalary;
-    public int quarterlyRevenue;
+    [System.NonSerialized] [ShowInInspector, ReadOnly] public int quarterlySalary;
+    [System.NonSerialized] [ShowInInspector, ReadOnly] public int quarterlyRevenue;
 
     public int Money => money;
     public int Quarter => quarter;
@@ -80,6 +81,7 @@ public class GameManager : MonoBehaviour
     public void RecruitEmployee(Employee employee)
     {
         employees.Add(employee);
+        employee.OnRecruited();
         RecalculateSalary();
     }
 
@@ -88,6 +90,7 @@ public class GameManager : MonoBehaviour
         //note: employee must be removed from project before firing!
         if(employee.project is not null) employee.project.RemoveEmployee(employee);
         employees.Remove(employee);
+        employee.OnFired();
         RecalculateSalary();
     }
 

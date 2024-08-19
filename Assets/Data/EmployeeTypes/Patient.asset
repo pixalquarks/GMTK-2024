@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Patient
   m_EditorClassIdentifier: 
   icon: {fileID: 0}
-  color: {r: 1, g: 0.6345195, b: 0.4481132, a: 1}
+  color: {r: 1, g: 0.76735836, b: 0.4470588, a: 1}
   strongGenre: {fileID: 11400000, guid: 278416ccc5b2a8449b302dd3e884e6bb, type: 2}
   weakGenre: {fileID: 11400000, guid: 6a66e10fcc0aedc48bcc12890587b9b9, type: 2}
