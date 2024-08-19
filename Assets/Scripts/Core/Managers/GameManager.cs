@@ -14,9 +14,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int quarter = 1;
 
     //game time. Different from global time.
-    private bool playing = true;
-    private bool cutscene = false;
-    private float timeScale = 1f;
+    [ShowInInspector] private bool playing = true;
+    [ShowInInspector] private bool cutscene = false;
+    [ShowInInspector] private float timeScale = 1f;
 
     //do not modify directly
     public List<Project> projects = new();

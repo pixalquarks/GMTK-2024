@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class ProjectEmployeeSlot : MonoBehaviour
 {
     [SerializeField] private Image indicator;
+    public RectTransform rect;
     public Transform employeeParent;
 
     private Project project;

@@ -11,6 +11,8 @@ public class Employee : MonoBehaviour
     public const int SP_PER_LEVEL = 3;
     #endregion
 
+    public Rigidbody2D rigid;
+
     #region stats
     //Initial stats
     //should not be changed during gameplay, only by EmployeeGenerator
@@ -63,6 +65,11 @@ public class Employee : MonoBehaviour
 
     [System.Serializable] public class LevelUpEvent : UnityEvent { }
     #endregion
+
+    private void Start()
+    {
+        rigid.bodyType = RigidbodyType2D.Static;
+    }
 
     public int GetSalary()
     {

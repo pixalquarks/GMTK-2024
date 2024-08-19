@@ -16,6 +16,7 @@ public class ProjectRenderer : MonoBehaviour
     [Header("Employees")]
     [SerializeField] private ProjectEmployeeSlot slotPrefab;
     [SerializeField] private Transform slotRoot;
+    public RectTransform slotsRect;
 
     [Header("Bars")]
     [SerializeField] private Image loadBarPrefab;
@@ -108,16 +109,19 @@ public class ProjectRenderer : MonoBehaviour
         programmerCountLabel.text = $"<color={(project.programmerCount >= project.minProgrammerCount ? "white" : "red")}>{project.programmerCount}</color>/{project.minProgrammerCount}";
 
         float b = (project.currentRevenueBonus * project.Efficiency() - 1f) * 100;
-        string bst;
-        if(b < 0)
+        string bst = "";
+        if (project.Status == Project.ProjectStatus.Development || project.Status == Project.ProjectStatus.Release)
         {
-            bst = $"<color=red>(-{-b:F1}%)</color>";
+            if (b < 0)
+            {
+                bst = $" <color=red>(-{-b:F1}%)</color>";
+            }
+            else
+            {
+                bst = $" <color=green>(+{b:F1}%)</color>";
+            }
         }
-        else
-        {
-            bst = $"<color=green>(+{b:F1}%)</color>";
-        }
-        revenueLabel.text = $"${project.GetRevenue()}/Q {bst}";
+        revenueLabel.text = $"${project.GetRevenue()}/Q{bst}";
 
         foreach (var s in slots)
         {

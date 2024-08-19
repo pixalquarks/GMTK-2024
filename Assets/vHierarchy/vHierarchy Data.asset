@@ -20,8 +20,14 @@ MonoBehaviour:
         keys:
         - globalObjectIdString: GlobalObjectId_V1-2-035dcb801fdf3204cba045394276d5fe-434167965-0
         - globalObjectIdString: GlobalObjectId_V1-2-035dcb801fdf3204cba045394276d5fe-1489291163-0
+        - globalObjectIdString: GlobalObjectId_V1-2-035dcb801fdf3204cba045394276d5fe-1384187005-0
+        - globalObjectIdString: GlobalObjectId_V1-2-035dcb801fdf3204cba045394276d5fe-384177910-0
         values:
         - colorIndex: 0
           iconNameOrGuid: Folder Icon
         - colorIndex: 2
+          iconNameOrGuid: 
+        - colorIndex: 8
+          iconNameOrGuid: 
+        - colorIndex: 6
           iconNameOrGuid: 

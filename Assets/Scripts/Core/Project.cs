@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,9 @@ public class Project : MonoBehaviour
     private const float DEGRADE_SPEED = 2f;
     private const float DEGRADE_HEAL_SPEED = 3f;
     #endregion
+
+    public ProjectRenderer prenderer;
+    public Rigidbody2D rigid;
 
     #region stats
     //Initial stats
@@ -37,11 +41,13 @@ public class Project : MonoBehaviour
     public int artistCount = 0;
 
     public float currentLoad; //cached
-    private float degredation; //used also as a countdown in Planned projects
-    private float progress; //0~100
+    [ShowInInspector] private float degredation; //used also as a countdown in Planned projects
+    [ShowInInspector] private float progress; //0~100
 
     public float currentSpeedBonus = 1f; //cached
     public float currentRevenueBonus = 1f; //cached
+
+    public bool killed = false;
 
     public enum ProjectStatus
     {
@@ -160,6 +166,21 @@ public class Project : MonoBehaviour
     private void Kill()
     {
         GameManager.main.RemoveProject(this);
+        killed = true;
+        StartCoroutine(IKill());
+    }
+
+    IEnumerator IKill()
+    {
+        float t = 0;
+        var start = transform.localScale;
+        while(t < 1f)
+        {
+            t += Time.deltaTime * 2f;
+            transform.localScale = start * (1 - t);
+
+            yield return null;
+        }
         Destroy(gameObject);
     }
 
@@ -174,7 +195,11 @@ public class Project : MonoBehaviour
             switch (status)
             {
                 case ProjectStatus.Planned:
-                    if (employees.Count > 0) nextStatus = ProjectStatus.Development;
+                    if (employees.Count > 0)
+                    {
+                        Debug.Log("Accept project!");
+                        nextStatus = ProjectStatus.Development;
+                    }
                     else if (degredation >= PLAN_LIFETIME) nextStatus = ProjectStatus.Scrapped;
                     break;
                 case ProjectStatus.Development:
@@ -191,6 +216,7 @@ public class Project : MonoBehaviour
         if (nextStatus != ProjectStatus.None)
         {
             status = nextStatus;
+            nextStatus = ProjectStatus.None;
             RecalculateLoad();
             switch (status)
             {
@@ -235,7 +261,7 @@ public class Project : MonoBehaviour
                 }
                 break;
             case ProjectStatus.Scrapped:
-                if (employees.Count < 0)
+                if (employees.Count <= 0)
                 {
                     Kill();
                 }

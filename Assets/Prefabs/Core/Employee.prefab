@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4929471483115560858}
   - component: {fileID: 7539562034165483063}
   - component: {fileID: 4904551502465108236}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RoleBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 7056400367947328905}
   - component: {fileID: 8022827680067246485}
   - component: {fileID: 466137949923152069}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: NameLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -237,7 +237,7 @@ GameObject:
   - component: {fileID: 696182447211390264}
   - component: {fileID: 8543287083994402017}
   - component: {fileID: 1395321430531076052}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Render
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -303,12 +303,6 @@ MonoBehaviour:
   levelLabel: {fileID: 2522719035555741340}
   roleIcon: {fileID: 6444931253210982517}
   typeIcon: {fileID: 6156780001806748119}
-  levelColors:
-  - {r: 1, g: 1, b: 1, a: 1}
-  - {r: 1, g: 0.76081014, b: 0, a: 1}
-  - {r: 1, g: 0.45740873, b: 0, a: 1}
-  programmerIcon: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
-  artistIcon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
 --- !u!1 &4270929077439303290
 GameObject:
   m_ObjectHideFlags: 0
@@ -320,7 +314,7 @@ GameObject:
   - component: {fileID: 9209647659916038507}
   - component: {fileID: 7710816632737647131}
   - component: {fileID: 3794072364262021504}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -398,7 +392,7 @@ GameObject:
   - component: {fileID: 930670712283373796}
   - component: {fileID: 5358105799169606346}
   - component: {fileID: 2522719035555741340}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LevelLabel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -532,7 +526,7 @@ GameObject:
   - component: {fileID: 1230166753358295089}
   - component: {fileID: 7110404149645071597}
   - component: {fileID: 5760068906113645266}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: NameBG
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -608,7 +602,7 @@ GameObject:
   - component: {fileID: 1822876364038462574}
   - component: {fileID: 8553408722192446640}
   - component: {fileID: 6444931253210982517}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: RoleIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -682,7 +676,7 @@ GameObject:
   m_Component:
   - component: {fileID: 431456657887387864}
   - component: {fileID: 3396928034446234806}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -768,7 +762,7 @@ GameObject:
   - component: {fileID: 3967182442705753369}
   - component: {fileID: 1499315608375138579}
   - component: {fileID: 6156780001806748119}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TypeIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -858,8 +852,9 @@ GameObject:
   - component: {fileID: 2991855965859783219}
   - component: {fileID: 5904638934674139364}
   - component: {fileID: 4324736596236755137}
-  m_Layer: 0
-  m_Name: TestEmployee
+  - component: {fileID: 6929890165901630957}
+  m_Layer: 7
+  m_Name: Employee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -894,6 +889,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 16d28ae668d585b428da729b6bc28b2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rigid: {fileID: 6929890165901630957}
   displayName: 
   role: 0
   type: {fileID: 0}
@@ -932,7 +928,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -948,3 +944,30 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 10, y: 10}
   m_EdgeRadius: 0
+--- !u!50 &6929890165901630957
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8731835401031309415}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0.6
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4

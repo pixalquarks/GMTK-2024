@@ -201,4 +201,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   indicator: {fileID: 3903921810764039065}
+  rect: {fileID: 6590862051681768248}
   employeeParent: {fileID: 3044859710496518857}
