@@ -203,8 +203,9 @@ namespace GMTK_2024
         {
             toTrack.Play();
             toTrack.volume = 0;
-            fromTrack.DOFade(0, musicFadeTime).onComplete = fromTrack.Stop;
-            toTrack.DOFade(1, musicFadeTime);
+            //todo fix
+            //fromTrack.DOFade(0, musicFadeTime).onComplete = fromTrack.Stop;
+            //toTrack.DOFade(1, musicFadeTime);
         }
 
         private IEnumerator TriggerFadeOnMusicEnd(float delay)
