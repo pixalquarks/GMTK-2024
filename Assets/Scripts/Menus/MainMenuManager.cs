@@ -1,7 +1,5 @@
 using System.Linq;
-using CozyChaosSpring2024;
 using DG.Tweening;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,8 +7,7 @@ namespace CozyChaosSpring2024
 {
     public class MainMenuManager : MonoBehaviour
     {
-        
-        [SerializeField] private RectTransform optionsPanel; 
+        [SerializeField] private RectTransform optionsPanel;
         private UIAnimation[] _uiAnimationsElements;
         public const float UIElemAnimDuration = 0.6f;
 
