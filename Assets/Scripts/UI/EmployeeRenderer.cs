@@ -12,15 +12,12 @@ public class EmployeeRenderer : MonoBehaviour
     [SerializeField] private Image roleIcon;
     [SerializeField] private Image typeIcon;
 
-    [SerializeField] private Color[] levelColors = { };
-    [SerializeField] private Sprite programmerIcon, artistIcon;
-
     private void Start()
     {
         levelLabel.text = $"LV{employee.Level}";
-        levelLabel.color = levelColors[employee.Level - 1];
+        levelLabel.color = UIThemeManager.main.levelColors[employee.Level - 1];
 
-        roleIcon.sprite = employee.role == Employee.EmployeeRole.Programmer ? programmerIcon : artistIcon;
+        roleIcon.sprite = UIThemeManager.main.GetRoleIcon(employee.role);
         typeIcon.sprite = employee.type.icon;
         typeIcon.color = employee.type.color;
 
@@ -30,6 +27,6 @@ public class EmployeeRenderer : MonoBehaviour
     private void UpdateLevel()
     {
         levelLabel.text = $"LV{employee.Level}";
-        levelLabel.color = levelColors[employee.Level - 1];
+        levelLabel.color = UIThemeManager.main.levelColors[employee.Level - 1];
     }
 }

@@ -33,10 +33,10 @@ public class Project : MonoBehaviour
     private ProjectStatus status = ProjectStatus.None;
     private ProjectStatus nextStatus = ProjectStatus.Planned;
     public readonly List<Employee> employees = new();
-    private int programmerCount = 0;
-    private int artistCount = 0;
+    public int programmerCount = 0;
+    public int artistCount = 0;
 
-    private float currentLoad; //cached
+    public float currentLoad; //cached
     private float degredation; //used also as a countdown in Planned projects
     private float progress; //0~100
 
@@ -69,7 +69,7 @@ public class Project : MonoBehaviour
     public EmployeeUpdateEvent onEmployeeChanged = new();
 
     [System.Serializable]
-    public class StatusUpdateEvent : UnityEvent<ProjectStatus> { }
+    public class StatusUpdateEvent : UnityEvent { }
 
     [System.Serializable]
     public class EmployeeUpdateEvent : UnityEvent { }
@@ -149,7 +149,7 @@ public class Project : MonoBehaviour
         currentRevenueBonus = 1f;
         foreach (Employee e in employees)
         {
-            currentLoad += 1 + e.SkillAbility * 0.1f;
+            currentLoad += e.GetLoad();
             currentSpeedBonus += e.SkillSpeed * 0.05f;
             currentRevenueBonus += e.SkillPassion * 0.05f;
         }
@@ -208,7 +208,7 @@ public class Project : MonoBehaviour
                 case ProjectStatus.Scrapped:
                     break;
             }
-            onStatusChanged.Invoke(status);
+            onStatusChanged.Invoke();
             GameManager.main.OnProjectStatusChange(this);
         }
 
@@ -226,7 +226,7 @@ public class Project : MonoBehaviour
                 }
                 else
                 {
-                    if(status == ProjectStatus.Development) progress += delta * Efficiency();
+                    if(status == ProjectStatus.Development) progress += delta * Efficiency() * currentSpeedBonus;
                     if (degredation > 0)
                     {
                         degredation -= delta * DEGRADE_HEAL_SPEED;

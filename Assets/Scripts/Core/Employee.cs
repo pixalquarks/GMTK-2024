@@ -171,4 +171,9 @@ public class Employee : MonoBehaviour
             project.RecalculateLoad();
         }
     }
+
+    public float GetLoad()
+    {
+        return 1 + SkillAbility * 0.1f;
+    }
 }
