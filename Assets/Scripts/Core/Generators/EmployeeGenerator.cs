@@ -83,6 +83,7 @@ public class EmployeeGenerator : MonoBehaviour
         for (int i = 4; i > 0 ; i--)
         {
             spMark[i] -= spMark[i - 1];
+            spMark[i] = Mathf.Round(spMark[i] * 10) * 0.1f;
         }
         EmployeeSkillset skillset = default;
         skillset.ability = spMark[0];

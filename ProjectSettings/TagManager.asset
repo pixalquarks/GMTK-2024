@@ -41,3 +41,21 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Shadows
+    uniqueID: 791519763
+    locked: 0
+  - name: Projects
+    uniqueID: 758935191
+    locked: 0
+  - name: Employees
+    uniqueID: 2613448729
+    locked: 0
+  - name: Overlay
+    uniqueID: 3983879749
+    locked: 0
+  - name: HUD
+    uniqueID: 30856053
+    locked: 0
+  - name: Effect
+    uniqueID: 3462300243
+    locked: 0

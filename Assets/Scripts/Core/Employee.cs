@@ -2,6 +2,7 @@ using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Employee : MonoBehaviour
 {
@@ -55,6 +56,12 @@ public class Employee : MonoBehaviour
     public float SkillSpeed => baseSkillset.speed + calculatedSkillBonus.speed;
     public float SkillCooperation => baseSkillset.cooperation + calculatedSkillBonus.cooperation;
     public float SkillPotential => baseSkillset.potential + calculatedSkillBonus.potential;
+    #endregion
+
+    #region events
+    public LevelUpEvent onLevelUp = new();
+
+    [System.Serializable] public class LevelUpEvent : UnityEvent { }
     #endregion
 
     public int GetSalary()
@@ -128,6 +135,8 @@ public class Employee : MonoBehaviour
         skillPoints += SP_PER_LEVEL;
         GameManager.main.RecalculateSalary();
         CalculateSkillBonus();
+
+        onLevelUp.Invoke();
     }
 
     private void CalculateSkillBonus()
