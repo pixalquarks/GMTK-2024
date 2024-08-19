@@ -6,6 +6,8 @@ public class EmployeeGenerator : MonoBehaviour
 {
     #region stats
     [Header("Generation Settings")]
+    public float salaryMultiplier = 1f;
+
     public float skillPointSalaryIncrease = 130; //internal value of skill points
     public float minSkillPoints = 4f;
     public float maxSkillPoints = 6.5f;
@@ -49,7 +51,7 @@ public class EmployeeGenerator : MonoBehaviour
 
         //set base salary
         employee.SetLevel(l);
-        employee.baseSalary = Mathf.CeilToInt((baseSalary * Mathf.Pow(levelMultiplier, l - 1) + sp * skillPointSalaryIncrease) * Random.Range(0.9f, 1.1f));
+        employee.baseSalary = Mathf.CeilToInt((baseSalary * Mathf.Pow(levelMultiplier, l - 1) + sp * skillPointSalaryIncrease) * Random.Range(0.75f, 1.1f) * salaryMultiplier);
 
         //set type and role
         employee.role = Random.Range(0f, 1f) > artistChance ? Employee.EmployeeRole.Programmer : Employee.EmployeeRole.Artist;

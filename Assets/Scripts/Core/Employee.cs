@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,14 +16,14 @@ public class Employee : MonoBehaviour
     public string displayName = "";
     public EmployeeRole role = EmployeeRole.Programmer;
     public EmployeeType type;
-    public EmployeeSkillset baseSkillset;
+    [System.NonSerialized] [ShowInInspector, ReadOnly] public EmployeeSkillset baseSkillset;
     public int baseSalary = 600;
     public EmployeeTrait mainTrait, subTrait;
     #endregion
 
     #region vars
     //changes during gameplay
-    private int level = 1;
+    [ShowInInspector, ReadOnly] private int level = 1;
     private int skillPoints = 0;
     private int exp = 0;
 
