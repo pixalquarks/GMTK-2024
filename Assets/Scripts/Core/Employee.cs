@@ -6,6 +6,7 @@ public class Employee : MonoBehaviour
 {
     #region constants
     public const int MAX_LEVEL = 3;
+    public const int SP_PER_LEVEL = 3;
     #endregion
 
     #region stats
@@ -32,6 +33,7 @@ public class Employee : MonoBehaviour
     [System.NonSerialized] public Project project;
 
     private bool _isFirstQuarter = false;
+    private bool _employed = false;
 
     public enum EmployeeRole
     {
@@ -44,6 +46,7 @@ public class Employee : MonoBehaviour
     public int Level => level;
     public int SkillPoints => skillPoints;
     public int Exp => exp;
+    public bool Employed => _employed;
 
     //skillsets
     public float SkillAbility => baseSkillset.ability + calculatedSkillBonus.ability;
@@ -66,13 +69,14 @@ public class Employee : MonoBehaviour
 
     public void OnRecruited()
     {
-        GameManager.main.RemoveMoney(GetSalary());
+        GameManager.main.RemoveMoney(baseSalary);
         _isFirstQuarter = true;//already paid for this quarter
+        _employed = true;
     }
 
     public void OnFired()
     {
-
+        _employed = false;
     }
 
     public void OnProjectJoined()
@@ -90,13 +94,37 @@ public class Employee : MonoBehaviour
         if(!_isFirstQuarter) GameManager.main.RemoveMoney(GetSalary());
         else _isFirstQuarter = false;
         //todo trigger trait
+
+        if(project is not null)
+        {
+            if(project.Status == Project.ProjectStatus.Development)
+            {
+                AddExp(Mathf.RoundToInt(70f * (1f + (project.requiredLoad - 3f) / 3f)));
+            }
+            else if(project.Status == Project.ProjectStatus.Release)
+            {
+                AddExp(Mathf.RoundToInt(40f * (1f + (project.requiredLoad - 3f) / 3f)));
+            }
+        }
+    }
+
+    public void AddExp(int amount)
+    {
+        if (level >= MAX_LEVEL) return;
+        exp += amount;
+        if (exp >= GetRequiredExp()) LevelUp();
+    }
+
+    public void SetLevel(int l)
+    {
+        level = l;
     }
 
     private void LevelUp()
     {
         exp = 0;
         level++;
-        skillPoints += 3;
+        skillPoints += SP_PER_LEVEL;
         GameManager.main.RecalculateSalary();
         CalculateSkillBonus();
     }

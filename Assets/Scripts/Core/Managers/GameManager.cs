@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,8 +10,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public static GameManager main;
 
-    private int money = 10000;
-    private int quarter = 1;
+    [SerializeField] private int money = 10000;
+    [SerializeField] private int quarter = 1;
 
     //game time. Different from global time.
     private bool playing = true;
@@ -25,8 +26,8 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Calculated quarterly salary estimate. Is not guaranteed to equal actual money consumption.
     /// </summary>
-    public int quarterlySalary;
-    public int quarterlyRevenue;
+    [System.NonSerialized] [ShowInInspector, ReadOnly] public int quarterlySalary;
+    [System.NonSerialized] [ShowInInspector, ReadOnly] public int quarterlyRevenue;
 
     public int Money => money;
     public int Quarter => quarter;
