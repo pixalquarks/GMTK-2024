@@ -136,6 +136,29 @@ public class Employee : MonoBehaviour
         level = l;
     }
 
+    public void SpendSkillPoint(int id)
+    {
+        switch (id)
+        {
+            case 0:
+                baseSkillset.ability += 1f;
+                break;
+            case 1:
+                baseSkillset.passion += 1f;
+                break;
+            case 2:
+                baseSkillset.speed += 1f;
+                break;
+            case 3:
+                baseSkillset.cooperation += 1f;
+                break;
+            case 4:
+                baseSkillset.potential += 1f;
+                break;
+        }
+        GameManager.main.RecalculateSalary();
+    }
+
     private void LevelUp()
     {
         exp = 0;

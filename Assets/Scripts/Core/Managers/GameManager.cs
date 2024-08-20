@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
 
     public ProjectGenerator projectGenerator;
     public EmployeeGenerator employeeGenerator;
+    public HUDRenderer srenderer;
 
     //project spawning
     [Header("Project Spawning")]
@@ -46,8 +47,11 @@ public class GameManager : MonoBehaviour
 
     public QuarterEndEvent onQuarterEnd = new();
     public QuarterEndEvent onNextQuarterStart = new();
+    public ProjectSpawnEvent onProjectSpawn = new();
+    public UnityEvent onGameOver = new();
 
     [System.Serializable] public class QuarterEndEvent : UnityEvent<int> { };
+    [System.Serializable] public class ProjectSpawnEvent : UnityEvent<Project> { };
 
     public int Money => money;
     public int Quarter => quarter;
@@ -108,6 +112,12 @@ public class GameManager : MonoBehaviour
 
         onQuarterEnd.Invoke(quarter);
 
+        if(money < 0)
+        {
+            GameOver();
+            yield break;
+        }
+
         quarter++;
         timePassed = 0;
 
@@ -121,6 +131,13 @@ public class GameManager : MonoBehaviour
 
         onNextQuarterStart.Invoke(quarter);
         cutscene = false;
+    }
+
+    public void GameOver()
+    {
+        cutscene = true;
+        //todo
+        onGameOver.Invoke();
     }
 
     public void AddMoney(int amount)
@@ -149,8 +166,44 @@ public class GameManager : MonoBehaviour
         RecalculateSalary();
     }
 
-    public void SpawnNewProject() {
-        //todo find distance and center
+    public void SpawnNewProject()
+    {
+        //find distance and center fo existing projects
+        float sx = 0, sy = 0;
+        foreach(var p in projects)
+        {
+            sx += p.transform.position.x;
+            sy += p.transform.position.y;
+        }
+        if (projects.Count > 0)
+        {
+            sx /= projects.Count;
+            sy /= projects.Count;
+        }
+
+        //find average spread
+        float dst = 0, dx, dy;
+        if (projects.Count > 0)
+        {
+            foreach (var p in projects)
+            {
+                dx = p.transform.position.x - sx;
+                dy = p.transform.position.y - sy;
+                dst += dx * dx + dy * dy;
+            }
+            dst = Mathf.Sqrt(dst / projects.Count);
+        }
+
+        Debug.Log($"Spawn Center: {sx}, {sy} Distance: {dst}");
+        dst += 15f;
+
+        float rad = Random.Range(0, Mathf.PI * 2);
+        Vector2 dir = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
+        dir = dir * dst + new Vector2(sx, sy);
+
+        Project project = projectGenerator.Generate(dir);
+        AddProject(project);
+        onProjectSpawn.Invoke(project);
     }
 
     public void AddProject(Project project)
@@ -176,6 +229,7 @@ public class GameManager : MonoBehaviour
             c += e.GetSalary();
         }
         quarterlySalary = c;
+        srenderer.UpdateMoneyValues();
     }
 
     public void RecalculateRevenue()
@@ -186,6 +240,7 @@ public class GameManager : MonoBehaviour
             c += e.GetRevenue();
         }
         quarterlyRevenue = c;
+        srenderer.UpdateMoneyValues();
     }
 
     public void OnProjectStatusChange(Project project)
@@ -211,6 +266,12 @@ public class GameManager : MonoBehaviour
     public void Resume()
     {
         playing = true;
+    }
+
+    public bool TogglePause()
+    {
+        playing = !playing;
+        return playing;
     }
 
     public void SetSpeed(float speed)
