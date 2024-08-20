@@ -229,6 +229,7 @@ MonoBehaviour:
   mainMenuCanvas: {fileID: 1578153544}
   optionsCanvas: {fileID: 1701171669}
   canvasAnimator: {fileID: 950177126}
+  volume: {fileID: 1786710006}
 --- !u!4 &61756791
 Transform:
   m_ObjectHideFlags: 0
@@ -718,7 +719,19 @@ MonoBehaviour:
   - name: Waltz Loop
     clip: {fileID: 8300000, guid: c35de9b7383c32c4b988051bf6fd40ef, type: 3}
     type: 0
-  sfxAudioClips: []
+  sfxAudioClips:
+  - name: Alarm
+    clip: {fileID: 8300000, guid: 31e1c8e1fce12be44b902a82e00c4d5e, type: 3}
+    type: 0
+  - name: Clap
+    clip: {fileID: 8300000, guid: 8ff36ed2ad049fd40960229b03c2c2a4, type: 3}
+    type: 0
+  - name: PickUp-1
+    clip: {fileID: 8300000, guid: 79c135df26a49f140bdbb8ed2ab5411d, type: 3}
+    type: 0
+  - name: PickUp-2
+    clip: {fileID: 8300000, guid: 70aa8e3347e87c14896748b87bb37679, type: 3}
+    type: 0
 --- !u!4 &598264742
 Transform:
   m_ObjectHideFlags: 0

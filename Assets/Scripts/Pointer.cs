@@ -28,8 +28,15 @@ namespace GMTK_2024
         }
 
 
+        private bool _pointerDestroyed = false;
         private void Update()
         {
+            if (_pointerDestroyed) return;
+            if (pointsTo == null)
+            {
+                _pointerDestroyed = true;
+                return;
+            }
             var toPosition = pointsTo.position;
             var fromPosition = _mainCamera.transform.position;
             fromPosition.z = 0f;

@@ -114,6 +114,27 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
+        y: 10200
+        width: 1920
+        height: 1020
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6c5a5fb0c2a99e74c9630a84b6024ac0
+      internalID: -1396062587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Spritesheet_FlameAnimation_1
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 9180
         width: 1920
         height: 1020
@@ -124,14 +145,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d1950f8c419e6d649b0bd33354a32d55
-      internalID: -1176989899
+      spriteID: 285234739af70f843bba0cbfbb6429e6
+      internalID: -1042822161
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Spritesheet_FlameAnimation_1
+      name: Spritesheet_FlameAnimation_2
       rect:
         serializedVersion: 2
         x: 0
@@ -145,14 +166,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e43ac860251af57429e0a6b27baa6c4a
-      internalID: -723509319
+      spriteID: 87dfb8ae7fceb9149beed123047ada42
+      internalID: -850751470
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Spritesheet_FlameAnimation_2
+      name: Spritesheet_FlameAnimation_3
       rect:
         serializedVersion: 2
         x: 0
@@ -166,14 +187,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 79e55573ddbad0f48b7ab404c9b937d6
-      internalID: 1425795474
+      spriteID: 2e137dca4a473244ba7c8fc5a130e6b6
+      internalID: 726349971
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Spritesheet_FlameAnimation_3
+      name: Spritesheet_FlameAnimation_4
       rect:
         serializedVersion: 2
         x: 0
@@ -187,14 +208,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bb401bbde1e301647a120243b36e19f0
-      internalID: -1658703111
+      spriteID: eadac02e351dedf4aab5f327c475b604
+      internalID: -976789213
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Spritesheet_FlameAnimation_4
+      name: Spritesheet_FlameAnimation_5
       rect:
         serializedVersion: 2
         x: 0
@@ -208,14 +229,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8b1ae3b41e0cf1948b311a13b36e9460
-      internalID: 1650049282
+      spriteID: 43fcb09e89c8c8b40a632bfdf89134b1
+      internalID: -1561509581
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Spritesheet_FlameAnimation_5
+      name: Spritesheet_FlameAnimation_6
       rect:
         serializedVersion: 2
         x: 0
@@ -229,14 +250,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bb40f63f394af7f439ffe88dfb0c35c5
-      internalID: -1040903908
+      spriteID: f370317ea38010544891be08375cd815
+      internalID: 151201742
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Spritesheet_FlameAnimation_6
+      name: Spritesheet_FlameAnimation_7
       rect:
         serializedVersion: 2
         x: 0
@@ -250,14 +271,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9c2f05f686023094c83761d9983eabc9
-      internalID: 2116084152
+      spriteID: 419949db041c8424db9d426a60bbe54b
+      internalID: -1645439565
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Spritesheet_FlameAnimation_7
+      name: Spritesheet_FlameAnimation_8
       rect:
         serializedVersion: 2
         x: 0
@@ -271,14 +292,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 26eb3af3f329663419bdf9105d506982
-      internalID: -408707579
+      spriteID: 85ea99f88a00060478f03c065eb12264
+      internalID: 1493034318
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Spritesheet_FlameAnimation_8
+      name: Spritesheet_FlameAnimation_9
       rect:
         serializedVersion: 2
         x: 0
@@ -292,29 +313,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9fb298e6e5f6f4d43a32667f4d134d42
-      internalID: 1255479224
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Spritesheet_FlameAnimation_9
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1920
-        height: 1020
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b9a49da888748ce4ba9f1fc524b89b83
-      internalID: -1558687870
+      spriteID: e3eb1653d98816e479ecb15ba68f7e3d
+      internalID: 1842945570
       vertices: []
       indices: 
       edges: []
@@ -330,16 +330,16 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Spritesheet_FlameAnimation_0: -1176989899
-      Spritesheet_FlameAnimation_1: -723509319
-      Spritesheet_FlameAnimation_2: 1425795474
-      Spritesheet_FlameAnimation_3: -1658703111
-      Spritesheet_FlameAnimation_4: 1650049282
-      Spritesheet_FlameAnimation_5: -1040903908
-      Spritesheet_FlameAnimation_6: 2116084152
-      Spritesheet_FlameAnimation_7: -408707579
-      Spritesheet_FlameAnimation_8: 1255479224
-      Spritesheet_FlameAnimation_9: -1558687870
+      Spritesheet_FlameAnimation_0: -1396062587
+      Spritesheet_FlameAnimation_1: -1042822161
+      Spritesheet_FlameAnimation_2: -850751470
+      Spritesheet_FlameAnimation_3: 726349971
+      Spritesheet_FlameAnimation_4: -976789213
+      Spritesheet_FlameAnimation_5: -1561509581
+      Spritesheet_FlameAnimation_6: 151201742
+      Spritesheet_FlameAnimation_7: -1645439565
+      Spritesheet_FlameAnimation_8: 1493034318
+      Spritesheet_FlameAnimation_9: 1842945570
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

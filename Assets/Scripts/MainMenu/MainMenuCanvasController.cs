@@ -1,5 +1,8 @@
+using DG.Tweening;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.SceneManagement;
 
 namespace GMTK_2024
@@ -9,6 +12,7 @@ namespace GMTK_2024
         [SerializeField] private RectTransform mainMenuCanvas;
         [SerializeField] private RectTransform optionsCanvas;
         [SerializeField] private Animator canvasAnimator;
+        [SerializeField] private Volume volume;
 
         private int burnTrigger = Animator.StringToHash("burn");
         private int zoomInTrigger = Animator.StringToHash("zoomIn");
@@ -44,9 +48,5 @@ namespace GMTK_2024
             canvasAnimator.SetTrigger(burnTrigger);
         }
 
-        public void OnBurnAnimationFinish()
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        }
     }
 }
