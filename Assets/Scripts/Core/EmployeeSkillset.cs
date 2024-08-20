@@ -13,4 +13,21 @@ public struct EmployeeSkillset
     public float speed;
     public float cooperation;
     public float potential;
+
+    public float GetValue(int id)
+    {
+        switch (id)
+        {
+            case 0:
+                return ability;
+            case 1:
+                return passion;
+            case 2:
+                return speed;
+            case 3:
+                return cooperation;
+            default:
+                return potential;
+        }
+    }
 }

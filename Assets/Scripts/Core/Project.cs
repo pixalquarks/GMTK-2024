@@ -162,8 +162,8 @@ public class Project : MonoBehaviour
         foreach (Employee e in employees)
         {
             currentLoad += e.GetLoad();
-            currentSpeedBonus += e.SkillSpeed * 0.05f;
-            currentRevenueBonus += e.SkillPassion * 0.05f;
+            currentSpeedBonus += e.GetBonusSpeed();
+            currentRevenueBonus += e.GetBonusRevenue();
         }
 
         GameManager.main.RecalculateRevenue();
