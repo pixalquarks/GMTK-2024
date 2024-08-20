@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using GMTK_2024;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UI;
@@ -57,7 +58,7 @@ public class GameCursor : MonoBehaviour
 
         transform.position = mousePos;
 
-        if(state == CursorState.PickupProject)
+        if (state == CursorState.PickupProject)
         {
             if (!Input.GetMouseButton(0))
             {
@@ -65,7 +66,7 @@ public class GameCursor : MonoBehaviour
                 return;
             }
         }
-        else if(state == CursorState.PickupEmployee)
+        else if (state == CursorState.PickupEmployee)
         {
             if (!Input.GetMouseButton(0))
             {
@@ -73,7 +74,7 @@ public class GameCursor : MonoBehaviour
                 return;
             }
 
-            if(hasHoverProject && (lastHoverProject == null || !lastHoverProject.CanAddEmployee(employee)))
+            if (hasHoverProject && (lastHoverProject == null || !lastHoverProject.CanAddEmployee(employee)))
             {
                 hasHoverProject = false;
                 lastHoverProject = null;
@@ -92,9 +93,9 @@ public class GameCursor : MonoBehaviour
                 if (!proj.CanAddEmployee(employee)) proj = null;
             }
 
-            if(proj != lastHoverProject)
+            if (proj != lastHoverProject)
             {
-                if(proj is not null)
+                if (proj is not null)
                 {
                     hasHoverProject = true;
                     lastHoverProject = proj;
@@ -116,16 +117,20 @@ public class GameCursor : MonoBehaviour
             {
                 highlight.transform.position = proj.prenderer.slotsRect.position;
             }
-            else {
+            else
+            {
                 n = Physics2D.OverlapCircleNonAlloc(mousePos, 1f, tmpSingle, 1 << FIRE_LAYER);
                 fire = n > 0;
             }
 
-            if(fire != hoverOverFire) {
-                if (fire) {
+            if (fire != hoverOverFire)
+            {
+                if (fire)
+                {
                     fireHighlight.enabled = true;
                 }
-                else {
+                else
+                {
                     fireHighlight.enabled = false;
                 }
                 hoverOverFire = fire;
@@ -137,7 +142,7 @@ public class GameCursor : MonoBehaviour
             {
                 Employee e = GethoveredEmployee(mousePos);
 
-                if((e is not null) && e.CanBePicked())
+                if ((e is not null) && e.CanBePicked())
                 {
                     PickupEmployee(e);
                     return;
@@ -158,26 +163,32 @@ public class GameCursor : MonoBehaviour
         }
     }
 
-    public Employee GethoveredEmployee(Vector3 mousePos) {
+    public Employee GethoveredEmployee(Vector3 mousePos)
+    {
         Employee e = null;
 
         //attempt to grab an employee from slots
         int n = Physics2D.OverlapCircleNonAlloc(mousePos, 1f, tmp, 1 << SLOTS_LAYER);
-        if (n > 0) {
+        if (n > 0)
+        {
             var c = GetClosest(mousePos, n);
             var proj = c.GetComponent<ProjectSlotsRedirect>().project;
             e = proj.prenderer.AttemptCastEmployee(mousePos, 5f);
         }
 
         //fallback to casting world
-        if (e is null) {
+        if (e is null)
+        {
             n = Physics2D.OverlapCircleNonAlloc(mousePos, 1f, tmp, 1 << EMPLOYEE_LAYER);
-            if (n > 0) {
+            if (n > 0)
+            {
                 e = GetClosest(mousePos, n).GetComponent<Employee>();
             }
-            else {
+            else
+            {
                 n = Physics2D.OverlapCircleNonAlloc(mousePos, 1f, tmp, 1 << SLOTTED_EMPLOYEE_LAYER);
-                if (n > 0) {
+                if (n > 0)
+                {
                     e = GetClosest(mousePos, n).GetComponent<Employee>();
                 }
             }
@@ -225,7 +236,7 @@ public class GameCursor : MonoBehaviour
             ty = pos.y - tmp[i].transform.position.y;
             float cur = tx * tx + ty * ty;
 
-            if(cur < dst2)
+            if (cur < dst2)
             {
                 dst2 = cur;
                 closest = tmp[i];
@@ -257,6 +268,8 @@ public class GameCursor : MonoBehaviour
             employee.gameObject.layer = EMPLOYEE_LAYER;
             GameManager.main.RecruitEmployee(employee);
         }
+        var instance = AudioManager.i;
+        instance.PlaySfxByName("PickUp-1");
         SetState(CursorState.PickupEmployee);
     }
 
@@ -285,6 +298,9 @@ public class GameCursor : MonoBehaviour
         }
 
         employee = null;
+
+        var instance = AudioManager.i;
+        instance.PlaySfxByName("PickUp-2");
         SetState(CursorState.Idle);
     }
 
@@ -294,6 +310,8 @@ public class GameCursor : MonoBehaviour
         p.transform.SetParent(transform);
         project = p;
 
+        var instance = AudioManager.i;
+        instance.PlaySfxByName("PickUp-1");
         SetState(CursorState.PickupProject);
     }
 
@@ -303,6 +321,8 @@ public class GameCursor : MonoBehaviour
         project.rigid.bodyType = RigidbodyType2D.Dynamic;
         project = null;
 
+        var instance = AudioManager.i;
+        instance.PlaySfxByName("PickUp-2");
         SetState(CursorState.Idle);
     }
 }

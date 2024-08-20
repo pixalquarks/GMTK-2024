@@ -273,7 +273,7 @@ namespace GMTK_2024
                 Debug.LogException(new Exception($"Could not find track with name: \"{sfxName}\". Please add the clip in the audio list."));
         }
 
-        public void PlayAudioByName(string audioClipName)
+        public void PlaySfxByName(string audioClipName)
         {
             var clip = GetClipByName(audioClipName);
             if (clip != null)
