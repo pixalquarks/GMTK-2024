@@ -137,19 +137,22 @@ public class ProjectRenderer : MonoBehaviour
         programmerCountLabel.text = $"<color={(project.programmerCount >= project.minProgrammerCount ? "white" : "red")}>{project.programmerCount}</color>/{project.minProgrammerCount}";
 
         float b = (project.currentRevenueBonus * project.Efficiency() - 1f) * 100;
-        string bst = "";
-        if (project.Status == Project.ProjectStatus.Development || project.Status == Project.ProjectStatus.Release)
-        {
-            if (b < 0)
-            {
+        if (project.Status == Project.ProjectStatus.Development || project.Status == Project.ProjectStatus.Release) {
+            string bst = "";
+            if (b < 0) {
                 bst = $" <color=red>(-{-b:F1}%)</color>";
             }
-            else
-            {
+            else {
                 bst = $" <color=green>(+{b:F1}%)</color>";
             }
+            revenueLabel.text = $"${project.GetRevenue()}/Q{bst}";
         }
-        revenueLabel.text = $"${project.GetRevenue()}/Q{bst}";
+        else if(project.Status == Project.ProjectStatus.Planned) {
+            revenueLabel.text = $"${project.baseRevenue}/Q";
+        }
+        else {
+            revenueLabel.text = "Scrapped";
+        }
 
         foreach (var s in slots)
         {
@@ -159,7 +162,7 @@ public class ProjectRenderer : MonoBehaviour
 
     private void UpdateProgress()
     {
-        progressLabel.text = $"Progress: {project.ProgressFraction * 100f:F0} <color=green>(+{project.Efficiency() * project.currentSpeedBonus:F1}/s)</color>";
+        progressLabel.text = $"Progress: {project.ProgressFraction * 100f:F0}% <color=green>(+{project.Efficiency() * project.currentSpeedBonus:F1}/s)</color>";
         SetBar(progressBar, project.ProgressFraction);
     }
 

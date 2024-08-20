@@ -83,6 +83,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1165899590735625010}
   - component: {fileID: 4430055806553241757}
+  - component: {fileID: 3066252177599381847}
   m_Layer: 0
   m_Name: Cursor
   m_TagString: Untagged
@@ -120,7 +121,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entityRoot: {fileID: 6131867720580160353}
   highlight: {fileID: 359914842993034917}
-  cursorRadius: 10
+  shadowSorter: {fileID: 3066252177599381847}
+--- !u!210 &3066252177599381847
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1896108338146834341}
+  m_Enabled: 1
+  m_SortingLayerID: -311087547
+  m_SortingLayer: 4
+  m_SortingOrder: 5
+  m_SortAtRoot: 0
 --- !u!1 &2016515661599330447
 GameObject:
   m_ObjectHideFlags: 0
@@ -152,9 +165,101 @@ Transform:
   m_Children:
   - {fileID: 6261528162386866676}
   - {fileID: 5738442198854073834}
+  - {fileID: 3720880438737223217}
   - {fileID: 1025872846610448834}
   m_Father: {fileID: 205201729269162278}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2654714104665154603
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3720880438737223217}
+  - component: {fileID: 8836830635650241038}
+  m_Layer: 0
+  m_Name: ProjectGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3720880438737223217
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2654714104665154603}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2819040939812782168}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8836830635650241038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2654714104665154603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24b544011b07cfa4987a1f01fd968314, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  difficulty: 0
+  baseRevenue: 1000
+  revenuePerEmployee: 700
+  revenuePerExtraLoad: 1800
+  extraLoadMin:
+    start: -0.1
+    scale: -0.05
+    clamp: -0.9
+    offset: 0
+  extraLoadMax:
+    start: 1.1
+    scale: 0.03
+    clamp: 1.8
+    offset: 2
+  baseTeamSize: 2
+  maxTeamSize:
+    start: 2
+    scale: 0.8
+    clamp: 15
+    offset: 1
+  introduceArtistDifficulty: 1.5
+  requireArtistDifficulty: 3
+  requiredArtistPercentage:
+    start: 0
+    scale: 0.2
+    clamp: 0.4
+    offset: 1.5
+  requiredProgrammerPercentage:
+    start: 0.1
+    scale: 0.2
+    clamp: 0.4
+    offset: 0.5
+  baseRequiredProgress: 100
+  progressPerEmployee: 20
+  initialCostPercentage:
+    start: 0.1
+    scale: 0.1
+    clamp: 2
+    offset: 0.5
+  genres:
+  - {fileID: 11400000, guid: 6b3176a37f77e8244a1114493f7fac1a, type: 2}
+  - {fileID: 11400000, guid: 278416ccc5b2a8449b302dd3e884e6bb, type: 2}
+  - {fileID: 11400000, guid: 6a66e10fcc0aedc48bcc12890587b9b9, type: 2}
+  - {fileID: 11400000, guid: 144f6389672682c47b83fdd356ce1435, type: 2}
+  - {fileID: 11400000, guid: 52991a0e2d813b64f921cdc87b8e9827, type: 2}
+  prefab: {fileID: 7576509485234773655, guid: a8726a45c16e00044b68b293d673eaf4, type: 3}
+  projectRoot: {fileID: 6131867720580160353}
 --- !u!1 &3391232756853704911
 GameObject:
   m_ObjectHideFlags: 0
@@ -245,6 +350,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7800695497344889520}
   - component: {fileID: 359914842993034917}
+  - component: {fileID: 7347924877096941455}
   m_Layer: 0
   m_Name: Highlight
   m_TagString: Untagged
@@ -319,6 +425,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!210 &7347924877096941455
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7151695076271018046}
+  m_Enabled: 1
+  m_SortingLayerID: -311087547
+  m_SortingLayer: 4
+  m_SortingOrder: 0
+  m_SortAtRoot: 1
 --- !u!1 &7254807313834447494
 GameObject:
   m_ObjectHideFlags: 0

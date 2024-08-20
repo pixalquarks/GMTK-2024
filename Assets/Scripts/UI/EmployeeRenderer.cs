@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class EmployeeRenderer : MonoBehaviour
 {
     [SerializeField] private Employee employee;
+    public Canvas canvas;
 
     [SerializeField] private TextMeshProUGUI levelLabel;
     [SerializeField] private Image roleIcon;

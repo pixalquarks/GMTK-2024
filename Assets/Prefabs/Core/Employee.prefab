@@ -300,6 +300,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   employee: {fileID: 5904638934674139364}
+  canvas: {fileID: 8543287083994402017}
   levelLabel: {fileID: 2522719035555741340}
   roleIcon: {fileID: 6444931253210982517}
   typeIcon: {fileID: 6156780001806748119}
@@ -890,6 +891,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigid: {fileID: 6929890165901630957}
+  srenderer: {fileID: 1395321430531076052}
   displayName: 
   role: 0
   type: {fileID: 0}
