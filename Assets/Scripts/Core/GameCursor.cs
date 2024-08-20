@@ -10,7 +10,8 @@ public class GameCursor : MonoBehaviour
     private const int EMPLOYEE_LAYER = 7;
     private const int SLOTS_LAYER = 8;
     private const int SLOTTED_EMPLOYEE_LAYER = 9;
-    private const int FIRE_LAYER = 10;
+    private const int FIRE_LAYER = 10; 
+    private const int EMPLOYEE_INFO_LAYER = 11;
 
 
     private static int OVERLAY_SORTING_LAYER;
@@ -19,6 +20,7 @@ public class GameCursor : MonoBehaviour
     [SerializeField] private Transform entityRoot;
     [SerializeField] private SpriteRenderer highlight, fireHighlight;
     [SerializeField] private SortingGroup shadowSorter;
+    [SerializeField] private EmployeeInfoDialog infoDialog;
 
     private Camera cam;
     private CursorState state;
@@ -48,6 +50,9 @@ public class GameCursor : MonoBehaviour
         cam = Camera.main;
         SetState(CursorState.Idle);
         OVERLAY_SORTING_LAYER = OVERLAY_SORTING_LAYER = SortingLayer.NameToID("Overlay");
+
+        EmployeeInfoDialog.main = infoDialog;
+        HideInfoPanel();
     }
 
     private void Update()
@@ -137,7 +142,7 @@ public class GameCursor : MonoBehaviour
             {
                 Employee e = GethoveredEmployee(mousePos);
 
-                if((e is not null) && e.CanBePicked())
+                if ((e is not null) && e.CanBePicked())
                 {
                     PickupEmployee(e);
                     return;
@@ -155,7 +160,36 @@ public class GameCursor : MonoBehaviour
                     }
                 }
             }
+            else
+            {
+                //hover -> show
+                Employee e = GethoveredEmployee(mousePos);
+                if (e is not null)
+                {
+                    ShowInfoPanel(e);
+                }
+                else
+                {
+                    if(infoDialog.employee == null || infoDialog.employee.killed || Physics2D.OverlapCircleNonAlloc(mousePos, 3f, tmpSingle, 1 << EMPLOYEE_INFO_LAYER) == 0)
+                    {
+                        HideInfoPanel();
+                    }
+                }
+            }
         }
+    }
+
+    private void ShowInfoPanel(Employee e)
+    {
+        infoDialog.employee = e;
+        if (!infoDialog.gameObject.activeSelf) infoDialog.gameObject.SetActive(true);
+        infoDialog.Rebuild();
+    }
+
+    private void HideInfoPanel()
+    {
+        if(infoDialog.gameObject.activeSelf) infoDialog.gameObject.SetActive(false);
+        infoDialog.employee = null;
     }
 
     public Employee GethoveredEmployee(Vector3 mousePos) {
@@ -198,6 +232,7 @@ public class GameCursor : MonoBehaviour
                 shadowSorter.enabled = false;
                 break;
             case CursorState.PickupEmployee:
+                HideInfoPanel();
                 highlight.enabled = false;
                 fireHighlight.enabled = false;
                 shadowSorter.enabled = true;
@@ -205,6 +240,7 @@ public class GameCursor : MonoBehaviour
                 lastHoverProject = null;
                 break;
             case CursorState.PickupProject:
+                HideInfoPanel();
                 highlight.enabled = false;
                 fireHighlight.enabled = false;
                 shadowSorter.enabled = false;

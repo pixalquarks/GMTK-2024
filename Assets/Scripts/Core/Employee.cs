@@ -29,7 +29,7 @@ public class Employee : MonoBehaviour
     //changes during gameplay
     [ShowInInspector, ReadOnly] private int level = 1;
     private int skillPoints = 0;
-    private int exp = 0;
+    [ShowInInspector] private int exp = 0;
 
     /// <summary>
     /// Cached skill set increase. Affected by Genre compatibility, Potential and Cooperation stats, and Traits. Should be summed with baseSkillSet.
@@ -52,6 +52,7 @@ public class Employee : MonoBehaviour
     public int Level => level;
     public int SkillPoints => skillPoints;
     public int Exp => exp;
+    public float ExpFraction => level >= MAX_LEVEL ? 1f : Mathf.Clamp01(exp / (float)GetRequiredExp());
     public bool Employed => _employed;
 
     //skillsets
@@ -149,6 +150,11 @@ public class Employee : MonoBehaviour
         if (level >= MAX_LEVEL) return;
         exp += amount;
         if (exp >= GetRequiredExp()) LevelUp();
+
+        if (EmployeeInfoDialog.main.gameObject.activeSelf && EmployeeInfoDialog.main.employee == this)
+        {
+            EmployeeInfoDialog.main.Rebuild();
+        }
     }
 
     public void SetLevel(int l)
@@ -176,6 +182,8 @@ public class Employee : MonoBehaviour
                 baseSkillset.potential += 1f;
                 break;
         }
+        skillPoints--;
+        CalculateSkillBonus();
         GameManager.main.RecalculateSalary();
     }
 
@@ -184,13 +192,13 @@ public class Employee : MonoBehaviour
         exp = 0;
         level++;
         skillPoints += SP_PER_LEVEL;
-        GameManager.main.RecalculateSalary();
         CalculateSkillBonus();
+        GameManager.main.RecalculateSalary();
 
         onLevelUp.Invoke();
     }
 
-    private void CalculateSkillBonus()
+    public void CalculateSkillBonus()
     {
         calculatedSkillBonus = EmployeeSkillset.Zero;
         float a = 0, p = 0, s = 0, bonus = 0;
@@ -211,6 +219,7 @@ public class Employee : MonoBehaviour
 
         //todo calculate trait
 
+        //Debug.Log($"a: {a} p: {p} s: {s} bonus: {bonus}");
         p += bonus;
         s += bonus;
         calculatedSkillBonus.ability = a;
@@ -221,10 +230,24 @@ public class Employee : MonoBehaviour
         {
             project.RecalculateLoad();
         }
+        if(EmployeeInfoDialog.main.gameObject.activeSelf && EmployeeInfoDialog.main.employee == this)
+        {
+            EmployeeInfoDialog.main.Rebuild();
+        }
     }
 
     public float GetLoad()
     {
         return 1 + SkillAbility * 0.1f;
+    }
+
+    public float GetBonusSpeed()
+    {
+        return SkillSpeed * 0.05f;
+    }
+
+    public float GetBonusRevenue()
+    {
+        return SkillPassion * 0.05f;
     }
 }
