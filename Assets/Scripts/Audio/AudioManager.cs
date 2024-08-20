@@ -60,18 +60,30 @@ namespace GMTK_2024
             MapAudiClips();
             LoadVolumeSettings();
             SplitClips();
-            PlayDefaultMusic();
+
+            foreach (var track in _tracks)
+            {
+                track.Stop();
+            }
+            track1.clip = GetClipByName("Bossa Nova");
+            track1.Play();
+            StartCoroutine(PlayOnFinish(track1.clip.length));
+        }
+        private IEnumerator PlayOnFinish(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            track2.Play();
         }
 
-        private void OnEnable()
-        {
-            SceneManager.sceneLoaded += OnSceneLoaded;
-        }
+        // private void OnEnable()
+        // {
+        //     SceneManager.sceneLoaded += OnSceneLoaded;
+        // }
 
-        private void OnDisable()
-        {
-            SceneManager.sceneLoaded -= OnSceneLoaded;
-        }
+        // private void OnDisable()
+        // {
+        //     SceneManager.sceneLoaded -= OnSceneLoaded;
+        // }
 
 
 
@@ -119,11 +131,6 @@ namespace GMTK_2024
                     QueuePlayNext("Bossa Loop");
                     StartCoroutine(TriggerPlayNext(_tracks[_currentTrackIndex].clip.length));
                 }
-            }
-            else if (index == SceneManager.sceneCountInBuildSettings - 1)
-            {
-                var clip = GetClipByName("Outro");
-                FadeBetweenTrack(clip);
             }
             else
             {
@@ -284,7 +291,7 @@ namespace GMTK_2024
 
         public void QueuePlayNext(string audioClipName)
         {
-            var clip = GetClipByName(audioClipName);
+            Debug.Log("Queueing: " + audioClipName);
             playNextQueue.Enqueue(GetClipByName(audioClipName));
         }
     }
