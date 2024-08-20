@@ -41,8 +41,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _ColorMask: 15
     - _EnableExternalAlpha: 0
     - _FlashScl: 1
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
     m_Colors:
     - _AltColor: {r: 0.8113208, g: 0.19517621, b: 0.21278045, a: 1}
     - _Color: {r: 0.9150943, g: 0.65454656, b: 0, a: 1}

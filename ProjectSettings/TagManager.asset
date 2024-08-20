@@ -15,7 +15,7 @@ TagManager:
   - Employee
   - EmployeeSlots
   - SlottedEmployee
-  - 
+  - Conveyor
   - 
   - 
   - 
@@ -55,6 +55,7 @@ TagManager:
     locked: 0
   - name: UI
     uniqueID: 911682845
+    locked: 0
   - name: HUD
     uniqueID: 30856053
     locked: 0

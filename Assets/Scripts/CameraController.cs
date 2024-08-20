@@ -34,8 +34,8 @@ namespace GMTK_2024
             if (disableZoom)
                 return;
             _camera.orthographicSize = Mathf.SmoothDamp(_camera.orthographicSize, _zoom, ref velocity, smoothTime);
-            if (!Input.GetMouseButton(2)) return;
-            var zoomDelta = Input.GetAxis("Mouse ScrollWheel");
+            //if (!Input.GetMouseButton(2)) return;
+            var zoomDelta = -Input.GetAxis("Mouse ScrollWheel");
 
             _zoom += zoomDelta * zoomSpeedMultiplier;
             _zoom = Mathf.Clamp(_zoom, minZoom, maxZoom);
