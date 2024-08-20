@@ -121,8 +121,8 @@ Shader "Unlit/HueShader"
 
             fixed4 ChangeHue(fixed4 color, fixed hueChange) {
                 fixed3 hsl = RGBtoHSL(color.rgb);
-                hsl.x += hueChange / 360.0; // normalize the hueChange to range [0, 1]
-                hsl.x = frac(hsl.x); // wrap around if the value goes beyond 1
+                hsl.x += hueChange / 360.0;
+                hsl.x = frac(hsl.x); // wrap around
                 fixed3 rgb = HSLtoRGB(hsl);
                 return fixed4(rgb, color.a);
             }
