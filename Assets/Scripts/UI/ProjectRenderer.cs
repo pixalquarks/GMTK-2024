@@ -57,8 +57,13 @@ public class ProjectRenderer : MonoBehaviour
             loadBars.Add(t);
         }
 
-        project.onEmployeeChanged.AddListener(Rebuild);
+        project.onEmployeeChanged.AddListener(() =>
+        {
+            SortEmployees();
+            Rebuild();
+        });
         project.onStatusChanged.AddListener(Rebuild);
+        project.onLoadChanged.AddListener(Rebuild);
 
         Rebuild();
     }

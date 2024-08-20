@@ -208,7 +208,7 @@ public class GameManager : MonoBehaviour
         }
 
         Debug.Log($"Spawn Center: {sx}, {sy} Distance: {dst}");
-        dst += 15f;
+        dst += Random.Range(15f, 30f);
 
         float rad = Random.Range(0, Mathf.PI * 2);
         Vector2 dir = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
@@ -250,7 +250,7 @@ public class GameManager : MonoBehaviour
         int c = 0;
         foreach (Project e in projects)
         {
-            c += e.GetRevenue();
+            if(e.Status == Project.ProjectStatus.Release) c += e.GetRevenue();
         }
         quarterlyRevenue = c;
         srenderer.UpdateMoneyDiffValues();
