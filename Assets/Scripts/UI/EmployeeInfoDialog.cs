@@ -22,6 +22,9 @@ public class EmployeeInfoDialog : MonoBehaviour
     [SerializeField] private TextMeshProUGUI expLabel;
     [SerializeField] private TextMeshProUGUI spLabel, loadLabel, speedBonusLabel, revenueBonusLabel;
 
+    [Header("Traits")]
+    [SerializeField] private TextMeshProUGUI salaryLabel;
+
     private TextMeshProUGUI[] skillsetLabels = new TextMeshProUGUI[5];
     private Button[] skillsetButtons = new Button[5];
     public Employee employee;
@@ -87,6 +90,8 @@ public class EmployeeInfoDialog : MonoBehaviour
         loadLabel.text = $"Load: {employee.GetLoad():F2}";
         revenueBonusLabel.text = $"Revenue+: {employee.GetBonusRevenue()*100:F2}%";
         speedBonusLabel.text = $"Speed+: {employee.GetBonusSpeed()*100:F2}%";
+
+        salaryLabel.text = $"${employee.GetSalary():N0}/Q";
     }
 
     private void SetBar(Image i, float f)

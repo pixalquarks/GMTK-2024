@@ -75,7 +75,7 @@ public class ProjectGenerator : MonoBehaviour
         project.name = $"Project_{project.displayName}";
 
         int n = Random.Range(baseTeamSize, Mathf.RoundToInt(maxTeamSize.GetValue(difficulty))) + Mathf.RoundToInt(teamSizeOffset.GetValue(difficulty));
-        float revenue = n * revenuePerEmployee + baseRevenue;
+        float revenue = (n - baseTeamSize) * revenuePerEmployee + baseRevenue;
 
         //decide required roles
         int artists = 0;

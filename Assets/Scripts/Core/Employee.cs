@@ -77,13 +77,21 @@ public class Employee : MonoBehaviour
 
     public int GetSalary()
     {
-        int multiplier = level == 3 ? 5 : level == 2 ? 2 : 1;
-        return multiplier * baseSalary;
+        float multiplier = level == 3 ? 3 : level == 2 ? 1.5f : 1;
+        return Mathf.RoundToInt(multiplier * baseSalary);
     }
 
     public int GetRequiredExp()
     {
-        return 100 + (200 <<  level);
+        switch (level)
+        {
+            case 3:
+                return 6500;
+            case 2:
+                return 1000;
+            default:
+                return 250;
+        }
     }
 
     public bool CanBePicked() {
@@ -243,11 +251,11 @@ public class Employee : MonoBehaviour
 
     public float GetBonusSpeed()
     {
-        return SkillSpeed * 0.05f;
+        return SkillSpeed * 0.1f + (SkillSpeed > 3f ? (SkillSpeed - 3f) * 0.05f : 0f);
     }
 
     public float GetBonusRevenue()
     {
-        return SkillPassion * 0.05f;
+        return SkillPassion * 0.05f + (SkillPassion > 3f ? (SkillPassion - 3f) * 0.03f : 0f);
     }
 }
