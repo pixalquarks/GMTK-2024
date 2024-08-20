@@ -124,7 +124,7 @@ public class ProjectRenderer : MonoBehaviour
 
                 investmentPopup.SetActive(true);
                 investmentPopup.transform.position = slotRoot.transform.position;
-                investmentLabel.text = $"Invest ${project.initialCost}";
+                investmentLabel.text = $"Invest ${project.initialCost:N0}";
                 break;
             case Project.ProjectStatus.Development:
                 var c = progressBar.color;

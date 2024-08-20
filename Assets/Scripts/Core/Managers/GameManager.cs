@@ -47,11 +47,14 @@ public class GameManager : MonoBehaviour
 
     public QuarterEndEvent onQuarterEnd = new();
     public QuarterEndEvent onNextQuarterStart = new();
+
     public ProjectSpawnEvent onProjectSpawn = new();
+    public EmployeeRecruitEvent onPlayerRecruit = new();
     public UnityEvent onGameOver = new();
 
     [System.Serializable] public class QuarterEndEvent : UnityEvent<int> { };
     [System.Serializable] public class ProjectSpawnEvent : UnityEvent<Project> { };
+    [System.Serializable] public class EmployeeRecruitEvent : UnityEvent<Employee> { };
 
     public int Money => money;
     public int Quarter => quarter;
@@ -163,6 +166,8 @@ public class GameManager : MonoBehaviour
         employees.Add(employee);
         employee.OnRecruited();
         RecalculateSalary();
+
+        onPlayerRecruit.Invoke(employee);
     }
 
     public void FireEmployee(Employee employee)
