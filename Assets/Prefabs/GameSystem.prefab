@@ -701,13 +701,20 @@ MonoBehaviour:
   quarter: 1
   secondsPerQuarter: 50
   difficultyPerQuarter: 0.25
-  projectGenerator: {fileID: 0}
-  employeeGenerator: {fileID: 0}
+  projectGenerator: {fileID: 8836830635650241038}
+  employeeGenerator: {fileID: 6355181219582033066}
+  projectSpawnRate: 2
   projects: []
   employees: []
   onQuarterEnd:
     m_PersistentCalls:
       m_Calls: []
   onNextQuarterStart:
+    m_PersistentCalls:
+      m_Calls: []
+  onProjectSpawn:
+    m_PersistentCalls:
+      m_Calls: []
+  onGameOver:
     m_PersistentCalls:
       m_Calls: []

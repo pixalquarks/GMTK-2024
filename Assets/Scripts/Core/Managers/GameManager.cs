@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
 
     public ProjectGenerator projectGenerator;
     public EmployeeGenerator employeeGenerator;
-    public HUDRenderer srenderer;
+    [System.NonSerialized] public HUDRenderer srenderer;
 
     //project spawning
     [Header("Project Spawning")]
@@ -63,6 +63,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         main = this;
+        srenderer = FindAnyObjectByType<HUDRenderer>();
     }
 
     private void Start()
@@ -71,6 +72,10 @@ public class GameManager : MonoBehaviour
         timePassed = 0;
         projectGenerator.difficulty = 0;
         projectSpawnTimer = secondsPerQuarter / projectSpawnRate * 0.5f;
+
+        srenderer.UpdateMoneyValue(false);
+        srenderer.UpdateMoneyDiffValues();
+        srenderer.UpdateQuarterValue();
     }
 
     private void Update() {
@@ -120,6 +125,7 @@ public class GameManager : MonoBehaviour
 
         quarter++;
         timePassed = 0;
+        srenderer.UpdateQuarterValue();
 
         if (quarter > 4) {
             //todo event
@@ -143,11 +149,13 @@ public class GameManager : MonoBehaviour
     public void AddMoney(int amount)
     {
         money += amount;
+        srenderer.UpdateMoneyValue();
     }
 
     public void RemoveMoney(int amount)
     {
         money -= amount;
+        srenderer.UpdateMoneyValue();
     }
 
     public void RecruitEmployee(Employee employee)
@@ -229,7 +237,7 @@ public class GameManager : MonoBehaviour
             c += e.GetSalary();
         }
         quarterlySalary = c;
-        srenderer.UpdateMoneyValues();
+        srenderer.UpdateMoneyDiffValues();
     }
 
     public void RecalculateRevenue()
@@ -240,7 +248,7 @@ public class GameManager : MonoBehaviour
             c += e.GetRevenue();
         }
         quarterlyRevenue = c;
-        srenderer.UpdateMoneyValues();
+        srenderer.UpdateMoneyDiffValues();
     }
 
     public void OnProjectStatusChange(Project project)

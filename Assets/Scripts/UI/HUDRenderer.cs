@@ -27,6 +27,9 @@ public class HUDRenderer : MonoBehaviour
 
     private void Start()
     {
+        SetBar(quarterBar, 0);
+        projectSpawnBar.fillAmount = 0.5f;
+
         pauseButton.onClick.AddListener(PauseClicked);
         pauseIndicator.SetActive(false);
         pauseImage.sprite = pauseIcon;
@@ -35,10 +38,30 @@ public class HUDRenderer : MonoBehaviour
         {
             SpeedButton button = speedButtons[i];
             int ii = i;
+            button.outline.enabled = i == 0;
             button.button.onClick.AddListener(() =>
             {
                 SpeedClicked(ii);
             });
+        }
+    }
+
+    private void Update() {
+        SetBar(quarterBar, GameManager.main.QuarterFraction);
+        projectSpawnBar.fillAmount = GameManager.main.ProjectSpawnFraction;
+
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            PauseClicked();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha1)) {
+            SpeedClicked(0);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2)) {
+            SpeedClicked(1);
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3)) {
+            SpeedClicked(2);
         }
     }
 
@@ -58,8 +81,30 @@ public class HUDRenderer : MonoBehaviour
         GameManager.main.SetSpeed(speedButtons[id].speed);
     }
 
-    public void UpdateMoneyValues()
+    public void UpdateMoneyValue(bool animate = true)
     {
-        //todo update revenue and salary values
+        if (animate) {
+            //todo animation
+            moneyLabel.text = $"${GameManager.main.Money:N0}";
+        }
+        else {
+            moneyLabel.text = $"${GameManager.main.Money:N0}";
+        }
+    }
+
+    public void UpdateMoneyDiffValues()
+    {
+        //update revenue and salary values
+        salaryLabel.text = $"${GameManager.main.quarterlySalary:N0} <color=white>/ Q</color>";
+        revenueLabel.text = $"${GameManager.main.quarterlyRevenue:N0} <color=white>/ Q</color>";
+    }
+
+    public void UpdateQuarterValue() {
+        quarterLabel.text = $"Year {(GameManager.main.Quarter - 1) / 4 + 1} Quarter {(GameManager.main.Quarter - 1) % 4 + 1}";
+    }
+
+    private void SetBar(Image i, float f) {
+        i.rectTransform.anchorMin = Vector2.zero;
+        i.rectTransform.anchorMax = new Vector2(f, 1);
     }
 }

@@ -165,10 +165,10 @@ public class ProjectRenderer : MonoBehaviour
             else {
                 bst = $" <color=green>(+{b:F1}%)</color>";
             }
-            revenueLabel.text = $"${project.GetRevenue()}/Q{bst}";
+            revenueLabel.text = $"${project.GetRevenue():N0}/Q{bst}";
         }
         else if(project.Status == Project.ProjectStatus.Planned) {
-            revenueLabel.text = $"${project.baseRevenue}/Q";
+            revenueLabel.text = $"${project.baseRevenue:N0}/Q";
         }
         else {
             revenueLabel.text = "Scrapped";
