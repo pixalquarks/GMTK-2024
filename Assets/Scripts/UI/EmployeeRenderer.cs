@@ -13,6 +13,13 @@ public class EmployeeRenderer : MonoBehaviour
     [SerializeField] private Image roleIcon;
     [SerializeField] private Image typeIcon;
 
+    [SerializeField] private Image torso;
+    [SerializeField] private Image[] heads = { };
+
+    [SerializeField] private Material hueMaterial;
+
+    private Material headMat, torsoMat;
+
     private void Start()
     {
         levelLabel.text = $"LV{employee.Level}";
@@ -22,6 +29,20 @@ public class EmployeeRenderer : MonoBehaviour
         typeIcon.sprite = employee.type.icon;
         typeIcon.color = employee.type.color;
 
+        int h = Random.Range(0, heads.Length);
+        for (int i = 0; i < heads.Length; i++)
+        {
+            heads[i].enabled = h == i;
+        }
+
+        headMat = new Material(hueMaterial);
+        torsoMat = new Material(hueMaterial);
+
+        heads[h].material = headMat;
+        torso.material = torsoMat;
+        headMat.SetFloat("_HueChange", Random.Range(0, 360f));
+        torsoMat.SetFloat("_HueChange", Random.Range(0, 360f));
+
         employee.onLevelUp.AddListener(UpdateLevel);
     }
 
@@ -29,5 +50,11 @@ public class EmployeeRenderer : MonoBehaviour
     {
         levelLabel.text = $"LV{employee.Level}";
         levelLabel.color = UIThemeManager.main.levelColors[employee.Level - 1];
+    }
+
+    private void OnDestroy()
+    {
+        Destroy(headMat);
+        Destroy(torsoMat);
     }
 }
