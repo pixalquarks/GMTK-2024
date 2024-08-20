@@ -12,6 +12,7 @@ public class Employee : MonoBehaviour
     #endregion
 
     public Rigidbody2D rigid;
+    public EmployeeRenderer srenderer;
 
     #region stats
     //Initial stats

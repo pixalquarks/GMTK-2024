@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf0d975ee9452de4b97ccb77ef0c8c02, type: 3}
   m_Name: Action
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 42762831be6ca174d96e84b0a6ed6783, type: 3}
   color: {r: 1, g: 0.49130458, b: 0.3820755, a: 1}

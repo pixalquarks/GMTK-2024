@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class GameCursor : MonoBehaviour
@@ -10,9 +11,13 @@ public class GameCursor : MonoBehaviour
     private const int SLOTS_LAYER = 8;
     private const int SLOTTED_EMPLOYEE_LAYER = 9;
 
+
+    private static int OVERLAY_SORTING_LAYER;
+    private const int SORTING_ORDER = 10;
+
     [SerializeField] private Transform entityRoot;
     [SerializeField] private SpriteRenderer highlight;
-    [SerializeField] private float cursorRadius = 10f;
+    [SerializeField] private SortingGroup shadowSorter;
 
     private Camera cam;
     private CursorState state;
@@ -20,6 +25,8 @@ public class GameCursor : MonoBehaviour
     private Employee employee;
     private Project project;
 
+    private int lastEmployeeLayer;
+    private int lastEmployeeOrder;
     private Project lastHoverProject;
     private bool hasHoverProject = false;
     private bool hoverOverFire = false;
@@ -38,6 +45,7 @@ public class GameCursor : MonoBehaviour
     {
         cam = Camera.main;
         SetState(CursorState.Idle);
+        OVERLAY_SORTING_LAYER = OVERLAY_SORTING_LAYER = SortingLayer.NameToID("Overlay");
     }
 
     private void Update()
@@ -160,11 +168,17 @@ public class GameCursor : MonoBehaviour
         {
             case CursorState.Idle:
                 highlight.enabled = false;
+                shadowSorter.enabled = false;
                 break;
             case CursorState.PickupEmployee:
                 highlight.enabled = false;
+                shadowSorter.enabled = true;
                 hasHoverProject = false;
                 lastHoverProject = null;
+                break;
+            case CursorState.PickupProject:
+                highlight.enabled = false;
+                shadowSorter.enabled = false;
                 break;
         }
     }
@@ -204,6 +218,11 @@ public class GameCursor : MonoBehaviour
         e.transform.localPosition = Vector3.zero;
         employee = e;
 
+        lastEmployeeLayer = e.srenderer.canvas.sortingLayerID;
+        lastEmployeeOrder = e.srenderer.canvas.sortingOrder;
+        e.srenderer.canvas.sortingLayerID = OVERLAY_SORTING_LAYER;
+        e.srenderer.canvas.sortingOrder = SORTING_ORDER;
+
         if (!employee.Employed)
         {
             GameManager.main.RecruitEmployee(employee);
@@ -214,6 +233,8 @@ public class GameCursor : MonoBehaviour
     private void DropEmployee()
     {
         employee.transform.SetParent(entityRoot);
+        employee.srenderer.canvas.sortingLayerID = lastEmployeeLayer;
+        employee.srenderer.canvas.sortingOrder = lastEmployeeOrder;
 
         if (hasHoverProject && lastHoverProject.CanAddEmployee(employee))
         {

@@ -24,6 +24,11 @@ public class ProjectRenderer : MonoBehaviour
     [SerializeField] private TextMeshProUGUI progressLabel, loadLabel, artistCountLabel, programmerCountLabel, revenueLabel;
     [SerializeField] private Image progressBar;
 
+    [Header("Popups")]
+    [SerializeField] private GameObject investmentPopup;
+    [SerializeField] private GameObject understaffedPopup;
+    [SerializeField] private TextMeshProUGUI investmentLabel;
+
     private List<ProjectEmployeeSlot> slots = new();
     private List<Image> loadBars = new();
 
@@ -61,6 +66,10 @@ public class ProjectRenderer : MonoBehaviour
         {
             UpdateProgress();
         }
+        else if(project.Status == Project.ProjectStatus.Planned)
+           {
+            investmentPopup.transform.position = slotRoot.transform.position;
+        }
 
         UpdateDegredation();
     }
@@ -95,6 +104,7 @@ public class ProjectRenderer : MonoBehaviour
 
     public void Rebuild()
     {
+        understaffedPopup.SetActive(false);
         genreIcon.sprite = project.genre.icon;
         genreIcon.color = project.genre.color;
 
@@ -108,12 +118,17 @@ public class ProjectRenderer : MonoBehaviour
             case Project.ProjectStatus.Planned:
                 SetBar(progressBar, 0);
                 progressLabel.text = "Progress: 0%";
+
+                investmentPopup.SetActive(true);
+                investmentPopup.transform.position = slotRoot.transform.position;
+                investmentLabel.text = $"Invest ${project.initialCost}";
                 break;
             case Project.ProjectStatus.Development:
                 var c = progressBar.color;
                 c.a = 1f;
                 progressBar.color = c;
                 UpdateProgress();
+                investmentPopup.SetActive(false);
                 break;
             case Project.ProjectStatus.Release:
                 var c1 = progressBar.color;
@@ -121,12 +136,14 @@ public class ProjectRenderer : MonoBehaviour
                 progressBar.color = c1;
                 SetBar(progressBar, 1);
                 progressLabel.text = "Progress: 100%";
+                investmentPopup.SetActive(false);
                 break;
             case Project.ProjectStatus.Scrapped:
                 var c2 = progressBar.color;
                 c2.a = 0.5f;
                 progressBar.color = c2;
                 progressLabel.text = "Progress: --";
+                investmentPopup.SetActive(false);
                 break;
         }
 
@@ -137,19 +154,22 @@ public class ProjectRenderer : MonoBehaviour
         programmerCountLabel.text = $"<color={(project.programmerCount >= project.minProgrammerCount ? "white" : "red")}>{project.programmerCount}</color>/{project.minProgrammerCount}";
 
         float b = (project.currentRevenueBonus * project.Efficiency() - 1f) * 100;
-        string bst = "";
-        if (project.Status == Project.ProjectStatus.Development || project.Status == Project.ProjectStatus.Release)
-        {
-            if (b < 0)
-            {
+        if (project.Status == Project.ProjectStatus.Development || project.Status == Project.ProjectStatus.Release) {
+            string bst = "";
+            if (b < 0) {
                 bst = $" <color=red>(-{-b:F1}%)</color>";
             }
-            else
-            {
+            else {
                 bst = $" <color=green>(+{b:F1}%)</color>";
             }
+            revenueLabel.text = $"${project.GetRevenue()}/Q{bst}";
         }
-        revenueLabel.text = $"${project.GetRevenue()}/Q{bst}";
+        else if(project.Status == Project.ProjectStatus.Planned) {
+            revenueLabel.text = $"${project.baseRevenue}/Q";
+        }
+        else {
+            revenueLabel.text = "Scrapped";
+        }
 
         foreach (var s in slots)
         {
@@ -159,7 +179,7 @@ public class ProjectRenderer : MonoBehaviour
 
     private void UpdateProgress()
     {
-        progressLabel.text = $"Progress: {project.ProgressFraction * 100f:F0} <color=green>(+{project.Efficiency() * project.currentSpeedBonus:F1}/s)</color>";
+        progressLabel.text = $"Progress: {project.ProgressFraction * 100f:F0}% <color=green>(+{project.Efficiency() * project.currentSpeedBonus:F1}/s)</color>";
         SetBar(progressBar, project.ProgressFraction);
     }
 
@@ -167,8 +187,9 @@ public class ProjectRenderer : MonoBehaviour
     {
         if(project.Status == Project.ProjectStatus.Scrapped)
         {
-            degradationBar.enabled = true;
+            if(!degradationBar.enabled) degradationBar.enabled = true;
             SetBar(degradationBar, 1);
+            if(understaffedPopup.activeSelf) understaffedPopup.SetActive(false);
             return;
         }
 
@@ -183,6 +204,9 @@ public class ProjectRenderer : MonoBehaviour
         {
             if (degradationBar.enabled) degradationBar.enabled = false;
         }
+
+        bool deg = project.IsUnderstaffed() && project.Status != Project.ProjectStatus.Planned;
+        if (understaffedPopup.activeSelf != deg) understaffedPopup.SetActive(deg);
     }
 
     private void SetBar(Image i, float f)

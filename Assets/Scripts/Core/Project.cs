@@ -40,6 +40,7 @@ public class Project : MonoBehaviour
     public readonly List<Employee> employees = new();
     public int programmerCount = 0;
     public int artistCount = 0;
+    public int level; //visual only
 
     public float currentLoad; //cached
     [ShowInInspector] private float degredation; //used also as a countdown in Planned projects

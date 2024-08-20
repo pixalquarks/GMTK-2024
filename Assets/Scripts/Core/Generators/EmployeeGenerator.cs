@@ -15,7 +15,7 @@ public class EmployeeGenerator : MonoBehaviour
     public float artistChance = 0.3f;
 
     public int baseSalary = 400;
-    public int levelMultiplier = 3;
+    public int levelMultiplier = 5;
     [Tooltip("The first element corresponds to the chance of a level 2 employee spawning, the second element corresponds to level 3 and so on.")]
     public float[] levelChances = { 0.20f, 0.05f };
 

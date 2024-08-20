@@ -6,6 +6,13 @@ Shader "Unlit/FlashAlternateShader"
         _Color("Color", Color) = (1,1,1,1)
         _AltColor("Alt Color", Color) = (1,0,1,1)
         _FlashScl("Flash Scale", Range(0, 5)) = 1
+
+        [HideInInspector] _Stencil("Stencil ID", Float) = 0
+        [HideInInspector] _StencilOp("Stencil Operation", Float) = 0
+        [HideInInspector] _StencilComp("Stencil Comparison", Float) = 8
+        [HideInInspector] _StencilReadMask("Stencil Read Mask", Float) = 255
+        [HideInInspector] _StencilWriteMask("Stencil Write Mask", Float) = 255
+        [HideInInspector] _ColorMask ("Color Mask", Float) = 15
     }
     SubShader
     {
@@ -14,6 +21,17 @@ Shader "Unlit/FlashAlternateShader"
             "Queue"="Transparent"
             "PreviewType"="Plane"
             "CanUseSpriteAtlas"="True" }
+
+        Stencil
+		{
+			Ref [_Stencil]
+			Comp [_StencilComp]
+			Pass [_StencilOp] 
+			ReadMask [_StencilReadMask]
+			WriteMask [_StencilWriteMask]
+		}
+
+        ColorMask [_ColorMask]
         LOD 100
 
         Pass
