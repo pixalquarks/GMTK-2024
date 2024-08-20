@@ -71,8 +71,8 @@ MonoBehaviour:
   - {r: 1, g: 1, b: 1, a: 1}
   - {r: 1, g: 0.76618373, b: 0, a: 1}
   - {r: 1, g: 0.43697524, b: 0, a: 1}
-  programmerIcon: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
-  artistIcon: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  programmerIcon: {fileID: 21300000, guid: 999242c7ac86edf47b4b472fde092eee, type: 3}
+  artistIcon: {fileID: 21300000, guid: 2c7f3bf06794cdb4b85af7ebb1cf05e0, type: 3}
 --- !u!1 &1896108338146834341
 GameObject:
   m_ObjectHideFlags: 0

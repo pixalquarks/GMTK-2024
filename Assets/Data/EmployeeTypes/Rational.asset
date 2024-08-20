@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1160a5417a0066d4a926840836df3471, type: 3}
   m_Name: Rational
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 1e5235403cf1d7642824e226e49419da, type: 3}
   color: {r: 0.55602527, g: 0.990566, b: 0.675441, a: 1}
   strongGenre: {fileID: 11400000, guid: 6a66e10fcc0aedc48bcc12890587b9b9, type: 2}
   weakGenre: {fileID: 11400000, guid: 6b3176a37f77e8244a1114493f7fac1a, type: 2}

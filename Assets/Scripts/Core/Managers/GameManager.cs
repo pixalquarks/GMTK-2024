@@ -2,6 +2,7 @@ using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
@@ -29,6 +30,11 @@ public class GameManager : MonoBehaviour
     [System.NonSerialized] [ShowInInspector, ReadOnly] public int quarterlySalary;
     [System.NonSerialized] [ShowInInspector, ReadOnly] public int quarterlyRevenue;
 
+    public QuarterEndEvent onQuarterEnd = new();
+    public QuarterEndEvent onNextQuarterStart = new();
+
+    [System.Serializable] public class QuarterEndEvent : UnityEvent<int> { };
+
     public int Money => money;
     public int Quarter => quarter;
     public bool IsPlaying => playing && !cutscene;
@@ -46,26 +52,35 @@ public class GameManager : MonoBehaviour
 
     public void UpdateQuarter()
     {
-        foreach (Project p in projects)
-        {
-            p.UpdateQuarter();
+        cutscene = true;
+        StartCoroutine(IUpdateQuarter());
+    }
+
+    IEnumerator IUpdateQuarter() {
+        yield return null;
+        foreach (Project p in projects) {
+            p.UpdateQuarter();//todo move cam to project
         }
 
-        foreach (Employee e in employees)
-        {
+        foreach (Employee e in employees) {
 
             e.UpdateQuarter();
         }
 
-        if(quarter > 4)
-        {
+        onQuarterEnd.Invoke(quarter);
+
+        quarter++;
+
+        if (quarter > 4) {
             //todo event
         }
 
-        if(quarter > 7 && quarter % 4 == 1)
-        {
+        if (quarter > 7 && quarter % 4 == 1) {
             //todo revenue goal
         }
+
+        onNextQuarterStart.Invoke(quarter);
+        cutscene = false;
     }
 
     public void AddMoney(int amount)
