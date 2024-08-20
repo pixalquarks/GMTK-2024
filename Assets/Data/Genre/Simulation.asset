@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf0d975ee9452de4b97ccb77ef0c8c02, type: 3}
   m_Name: Simulation
   m_EditorClassIdentifier: 
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 4673c9deb30bcaa4fae7e37dbda30f5c, type: 3}
   color: {r: 0.4198113, g: 0.7344259, b: 1, a: 1}
