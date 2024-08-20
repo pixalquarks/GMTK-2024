@@ -11,8 +11,21 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public static GameManager main;
 
+    [Header("General Settings")]
     [SerializeField] private int money = 10000;
     [SerializeField] private int quarter = 1;
+
+    public float secondsPerQuarter = 50f;
+    public float difficultyPerQuarter = 0.25f;
+
+    public ProjectGenerator projectGenerator;
+    public EmployeeGenerator employeeGenerator;
+    [System.NonSerialized] public HUDRenderer srenderer;
+
+    //project spawning
+    [Header("Project Spawning")]
+    [Tooltip("Per Quarter")]
+    public int projectSpawnRate = 2;
 
     //game time. Different from global time.
     [ShowInInspector] private bool playing = true;
@@ -29,30 +42,68 @@ public class GameManager : MonoBehaviour
     /// </summary>
     [System.NonSerialized] [ShowInInspector, ReadOnly] public int quarterlySalary;
     [System.NonSerialized] [ShowInInspector, ReadOnly] public int quarterlyRevenue;
+    private float timePassed = 0;
+    private float projectSpawnTimer = 0;
 
     public QuarterEndEvent onQuarterEnd = new();
     public QuarterEndEvent onNextQuarterStart = new();
 
+    public ProjectSpawnEvent onProjectSpawn = new();
+    public EmployeeRecruitEvent onPlayerRecruit = new();
+    public UnityEvent onGameOver = new();
+
     [System.Serializable] public class QuarterEndEvent : UnityEvent<int> { };
+    [System.Serializable] public class ProjectSpawnEvent : UnityEvent<Project> { };
+    [System.Serializable] public class EmployeeRecruitEvent : UnityEvent<Employee> { };
 
     public int Money => money;
     public int Quarter => quarter;
     public bool IsPlaying => playing && !cutscene;
     public float GameSpeed => IsPlaying ? timeScale : 0;
+    public float QuarterFraction => timePassed / secondsPerQuarter;
+    public float ProjectSpawnFraction => projectSpawnTimer / secondsPerQuarter;
 
     private void Awake()
     {
         main = this;
+        srenderer = FindAnyObjectByType<HUDRenderer>();
     }
 
     private void Start()
     {
         quarter = 1;
+        timePassed = 0;
+        projectGenerator.difficulty = 0;
+        projectSpawnTimer = secondsPerQuarter / projectSpawnRate * 0.5f;
+
+        srenderer.UpdateMoneyValue(false);
+        srenderer.UpdateMoneyDiffValues();
+        srenderer.UpdateQuarterValue();
+    }
+
+    private void Update() {
+        if (!IsPlaying) return;
+        float delta = Time.deltaTime * GameSpeed;
+
+        timePassed += delta;
+        projectGenerator.difficulty += delta * difficultyPerQuarter * (1f / secondsPerQuarter);
+        projectSpawnTimer += delta * projectSpawnRate;
+
+        if(projectSpawnTimer > secondsPerQuarter) {
+            projectSpawnTimer -= secondsPerQuarter;
+            SpawnNewProject();
+        }
+
+        if (timePassed > secondsPerQuarter) {
+            timePassed = secondsPerQuarter;
+            UpdateQuarter();
+        }
     }
 
     public void UpdateQuarter()
     {
         cutscene = true;
+        projectSpawnTimer = secondsPerQuarter / projectSpawnRate * 0.5f;
         StartCoroutine(IUpdateQuarter());
     }
 
@@ -69,7 +120,15 @@ public class GameManager : MonoBehaviour
 
         onQuarterEnd.Invoke(quarter);
 
+        if(money < 0)
+        {
+            GameOver();
+            yield break;
+        }
+
         quarter++;
+        timePassed = 0;
+        srenderer.UpdateQuarterValue();
 
         if (quarter > 4) {
             //todo event
@@ -83,14 +142,23 @@ public class GameManager : MonoBehaviour
         cutscene = false;
     }
 
+    public void GameOver()
+    {
+        cutscene = true;
+        //todo
+        onGameOver.Invoke();
+    }
+
     public void AddMoney(int amount)
     {
         money += amount;
+        srenderer.UpdateMoneyValue();
     }
 
     public void RemoveMoney(int amount)
     {
         money -= amount;
+        srenderer.UpdateMoneyValue();
     }
 
     public void RecruitEmployee(Employee employee)
@@ -98,6 +166,8 @@ public class GameManager : MonoBehaviour
         employees.Add(employee);
         employee.OnRecruited();
         RecalculateSalary();
+
+        onPlayerRecruit.Invoke(employee);
     }
 
     public void FireEmployee(Employee employee)
@@ -107,6 +177,46 @@ public class GameManager : MonoBehaviour
         employees.Remove(employee);
         employee.OnFired();
         RecalculateSalary();
+    }
+
+    public void SpawnNewProject()
+    {
+        //find distance and center fo existing projects
+        float sx = 0, sy = 0;
+        foreach(var p in projects)
+        {
+            sx += p.transform.position.x;
+            sy += p.transform.position.y;
+        }
+        if (projects.Count > 0)
+        {
+            sx /= projects.Count;
+            sy /= projects.Count;
+        }
+
+        //find average spread
+        float dst = 0, dx, dy;
+        if (projects.Count > 0)
+        {
+            foreach (var p in projects)
+            {
+                dx = p.transform.position.x - sx;
+                dy = p.transform.position.y - sy;
+                dst += dx * dx + dy * dy;
+            }
+            dst = Mathf.Sqrt(dst / projects.Count);
+        }
+
+        Debug.Log($"Spawn Center: {sx}, {sy} Distance: {dst}");
+        dst += 15f;
+
+        float rad = Random.Range(0, Mathf.PI * 2);
+        Vector2 dir = new Vector2(Mathf.Cos(rad), Mathf.Sin(rad));
+        dir = dir * dst + new Vector2(sx, sy);
+
+        Project project = projectGenerator.Generate(dir);
+        AddProject(project);
+        onProjectSpawn.Invoke(project);
     }
 
     public void AddProject(Project project)
@@ -132,6 +242,7 @@ public class GameManager : MonoBehaviour
             c += e.GetSalary();
         }
         quarterlySalary = c;
+        srenderer.UpdateMoneyDiffValues();
     }
 
     public void RecalculateRevenue()
@@ -142,6 +253,7 @@ public class GameManager : MonoBehaviour
             c += e.GetRevenue();
         }
         quarterlyRevenue = c;
+        srenderer.UpdateMoneyDiffValues();
     }
 
     public void OnProjectStatusChange(Project project)
@@ -167,6 +279,12 @@ public class GameManager : MonoBehaviour
     public void Resume()
     {
         playing = true;
+    }
+
+    public bool TogglePause()
+    {
+        playing = !playing;
+        return playing;
     }
 
     public void SetSpeed(float speed)

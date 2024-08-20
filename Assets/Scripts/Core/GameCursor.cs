@@ -10,13 +10,14 @@ public class GameCursor : MonoBehaviour
     private const int EMPLOYEE_LAYER = 7;
     private const int SLOTS_LAYER = 8;
     private const int SLOTTED_EMPLOYEE_LAYER = 9;
+    private const int FIRE_LAYER = 10;
 
 
     private static int OVERLAY_SORTING_LAYER;
     private const int SORTING_ORDER = 10;
 
     [SerializeField] private Transform entityRoot;
-    [SerializeField] private SpriteRenderer highlight;
+    [SerializeField] private SpriteRenderer highlight, fireHighlight;
     [SerializeField] private SortingGroup shadowSorter;
 
     private Camera cam;
@@ -32,6 +33,7 @@ public class GameCursor : MonoBehaviour
     private bool hoverOverFire = false;
 
     private Collider2D[] tmp = new Collider2D[15];
+    private Collider2D[] tmpSingle = new Collider2D[1];
 
     public enum CursorState
     {
@@ -109,37 +111,33 @@ public class GameCursor : MonoBehaviour
                 }
             }
 
+            bool fire = false;
             if (hasHoverProject)
             {
                 highlight.transform.position = proj.prenderer.slotsRect.position;
+            }
+            else {
+                n = Physics2D.OverlapCircleNonAlloc(mousePos, 1f, tmpSingle, 1 << FIRE_LAYER);
+                fire = n > 0;
+            }
+
+            if(fire != hoverOverFire) {
+                if (fire) {
+                    fireHighlight.enabled = true;
+                }
+                else {
+                    fireHighlight.enabled = false;
+                }
+                hoverOverFire = fire;
             }
         }
         else
         {
             if (Input.GetMouseButtonDown(0))
             {
-                Employee e = null;
+                Employee e = GethoveredEmployee(mousePos);
 
-                //attempt to grab an employee from slots
-                int n = Physics2D.OverlapCircleNonAlloc(mousePos, 1f, tmp, 1 << SLOTS_LAYER);
-                if (n > 0)
-                {
-                    var c = GetClosest(mousePos, n);
-                    var proj = c.GetComponent<ProjectSlotsRedirect>().project;
-                    e = proj.prenderer.AttemptCastEmployee(mousePos, 5f);
-                }
-
-                //fallback to casting world
-                if(e is null)
-                {
-                    n = Physics2D.OverlapCircleNonAlloc(mousePos, 1f, tmp, 1 << EMPLOYEE_LAYER);
-                    if (n > 0)
-                    {
-                        e = GetClosest(mousePos, n).GetComponent<Employee>();
-                    }
-                }
-
-                if(e is not null)
+                if((e is not null) && e.CanBePicked())
                 {
                     PickupEmployee(e);
                     return;
@@ -147,7 +145,7 @@ public class GameCursor : MonoBehaviour
                 else
                 {
                     //pick up project
-                    n = Physics2D.OverlapCircleNonAlloc(mousePos, 1f, tmp, 1 << PROJECT_LAYER);
+                    int n = Physics2D.OverlapCircleNonAlloc(mousePos, 1f, tmp, 1 << PROJECT_LAYER);
                     if (n > 0)
                     {
                         var c = GetClosest(mousePos, n);
@@ -160,6 +158,34 @@ public class GameCursor : MonoBehaviour
         }
     }
 
+    public Employee GethoveredEmployee(Vector3 mousePos) {
+        Employee e = null;
+
+        //attempt to grab an employee from slots
+        int n = Physics2D.OverlapCircleNonAlloc(mousePos, 1f, tmp, 1 << SLOTS_LAYER);
+        if (n > 0) {
+            var c = GetClosest(mousePos, n);
+            var proj = c.GetComponent<ProjectSlotsRedirect>().project;
+            e = proj.prenderer.AttemptCastEmployee(mousePos, 5f);
+        }
+
+        //fallback to casting world
+        if (e is null) {
+            n = Physics2D.OverlapCircleNonAlloc(mousePos, 1f, tmp, 1 << EMPLOYEE_LAYER);
+            if (n > 0) {
+                e = GetClosest(mousePos, n).GetComponent<Employee>();
+            }
+            else {
+                n = Physics2D.OverlapCircleNonAlloc(mousePos, 1f, tmp, 1 << SLOTTED_EMPLOYEE_LAYER);
+                if (n > 0) {
+                    e = GetClosest(mousePos, n).GetComponent<Employee>();
+                }
+            }
+        }
+
+        return e;
+    }
+
     private void SetState(CursorState state)
     {
         this.state = state;
@@ -168,16 +194,19 @@ public class GameCursor : MonoBehaviour
         {
             case CursorState.Idle:
                 highlight.enabled = false;
+                fireHighlight.enabled = false;
                 shadowSorter.enabled = false;
                 break;
             case CursorState.PickupEmployee:
                 highlight.enabled = false;
+                fireHighlight.enabled = false;
                 shadowSorter.enabled = true;
                 hasHoverProject = false;
                 lastHoverProject = null;
                 break;
             case CursorState.PickupProject:
                 highlight.enabled = false;
+                fireHighlight.enabled = false;
                 shadowSorter.enabled = false;
                 break;
         }
@@ -225,6 +254,7 @@ public class GameCursor : MonoBehaviour
 
         if (!employee.Employed)
         {
+            employee.gameObject.layer = EMPLOYEE_LAYER;
             GameManager.main.RecruitEmployee(employee);
         }
         SetState(CursorState.PickupEmployee);

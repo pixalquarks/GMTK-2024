@@ -10,7 +10,7 @@ public class ProjectRenderer : MonoBehaviour
 
     [Header("Title")]
     [SerializeField] private TextMeshProUGUI nameLabel;
-    [SerializeField] private Image genreIcon, statusBackground, degradationBar;
+    [SerializeField] private Image genreIcon, statusBackground, degradationBar, titleBackground, background;
     [SerializeField] private TextMeshProUGUI statusLabel;
 
     [Header("Employees")]
@@ -36,6 +36,9 @@ public class ProjectRenderer : MonoBehaviour
     {
         nameLabel.text = project.displayName;
         degradationBar.enabled = false;
+
+        titleBackground.color = UIThemeManager.main.projectLevelTitleColors[project.level - 1];
+        background.sprite = UIThemeManager.main.projectLevelBackgrounds[project.level - 1];
 
         slotRoot.ClearChildren();
         slots.Clear();
@@ -121,7 +124,7 @@ public class ProjectRenderer : MonoBehaviour
 
                 investmentPopup.SetActive(true);
                 investmentPopup.transform.position = slotRoot.transform.position;
-                investmentLabel.text = $"Invest ${project.initialCost}";
+                investmentLabel.text = $"Invest ${project.initialCost:N0}";
                 break;
             case Project.ProjectStatus.Development:
                 var c = progressBar.color;
@@ -162,10 +165,10 @@ public class ProjectRenderer : MonoBehaviour
             else {
                 bst = $" <color=green>(+{b:F1}%)</color>";
             }
-            revenueLabel.text = $"${project.GetRevenue()}/Q{bst}";
+            revenueLabel.text = $"${project.GetRevenue():N0}/Q{bst}";
         }
         else if(project.Status == Project.ProjectStatus.Planned) {
-            revenueLabel.text = $"${project.baseRevenue}/Q";
+            revenueLabel.text = $"${project.baseRevenue:N0}/Q";
         }
         else {
             revenueLabel.text = "Scrapped";

@@ -39,6 +39,7 @@ public class Employee : MonoBehaviour
 
     private bool _isFirstQuarter = false;
     private bool _employed = false;
+    public bool killed = false;
 
     public enum EmployeeRole
     {
@@ -70,6 +71,7 @@ public class Employee : MonoBehaviour
     private void Start()
     {
         rigid.bodyType = RigidbodyType2D.Dynamic;
+        killed = false;
     }
 
     public int GetSalary()
@@ -83,6 +85,10 @@ public class Employee : MonoBehaviour
         return 100 + (200 <<  level);
     }
 
+    public bool CanBePicked() {
+        return !killed;
+    }
+
     public void OnRecruited()
     {
         GameManager.main.RemoveMoney(baseSalary);
@@ -93,6 +99,20 @@ public class Employee : MonoBehaviour
     public void OnFired()
     {
         _employed = false;
+        killed = true;
+        StartCoroutine(IKill());
+    }
+
+    IEnumerator IKill() {
+        float t = 0;
+        var start = transform.localScale;
+        while (t < 1f) {
+            t += Time.deltaTime * 2f;
+            transform.localScale = start * (1 - t);
+
+            yield return null;
+        }
+        Destroy(gameObject);
     }
 
     public void OnProjectJoined()
@@ -134,6 +154,29 @@ public class Employee : MonoBehaviour
     public void SetLevel(int l)
     {
         level = l;
+    }
+
+    public void SpendSkillPoint(int id)
+    {
+        switch (id)
+        {
+            case 0:
+                baseSkillset.ability += 1f;
+                break;
+            case 1:
+                baseSkillset.passion += 1f;
+                break;
+            case 2:
+                baseSkillset.speed += 1f;
+                break;
+            case 3:
+                baseSkillset.cooperation += 1f;
+                break;
+            case 4:
+                baseSkillset.potential += 1f;
+                break;
+        }
+        GameManager.main.RecalculateSalary();
     }
 
     private void LevelUp()
