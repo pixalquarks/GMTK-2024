@@ -11,6 +11,9 @@ public class UIThemeManager : MonoBehaviour
     public Color[] loadColors = { };
     public Color[] levelColors = { };
 
+    public Sprite[] projectLevelBackgrounds = { };
+    public Color[] projectLevelTitleColors = { };
+
     public Sprite programmerIcon, artistIcon;
 
     private void Awake()

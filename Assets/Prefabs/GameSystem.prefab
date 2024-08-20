@@ -71,6 +71,18 @@ MonoBehaviour:
   - {r: 1, g: 1, b: 1, a: 1}
   - {r: 1, g: 0.76618373, b: 0, a: 1}
   - {r: 1, g: 0.43697524, b: 0, a: 1}
+  projectLevelBackgrounds:
+  - {fileID: 21300000, guid: 99e0d22cfe9091449afe0345e89af6fe, type: 3}
+  - {fileID: 21300000, guid: 5dba43577fe32ee4bb8d792c6c02790f, type: 3}
+  - {fileID: 21300000, guid: 8eecd01596727bd45b61691ea0f8cf10, type: 3}
+  - {fileID: 21300000, guid: ebd29206687f3394da86170f0e3e148c, type: 3}
+  - {fileID: 21300000, guid: aa539b71b5e6a1745b39ac4d84c8771e, type: 3}
+  projectLevelTitleColors:
+  - {r: 0.3018868, g: 0.19957647, b: 0.13812746, a: 1}
+  - {r: 0.19508722, g: 0.21013479, b: 0.3018868, a: 1}
+  - {r: 0.32156864, g: 0.2663163, b: 0.13333334, a: 1}
+  - {r: 0.06977572, g: 0.26047164, b: 0.3018868, a: 1}
+  - {r: 0.4528302, g: 0.1003916, b: 0.21361887, a: 1}
   programmerIcon: {fileID: 21300000, guid: 999242c7ac86edf47b4b472fde092eee, type: 3}
   artistIcon: {fileID: 21300000, guid: 2c7f3bf06794cdb4b85af7ebb1cf05e0, type: 3}
 --- !u!1 &1896108338146834341
@@ -687,5 +699,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   money: 10000
   quarter: 1
+  secondsPerQuarter: 50
+  difficultyPerQuarter: 0.25
+  projectGenerator: {fileID: 0}
+  employeeGenerator: {fileID: 0}
   projects: []
   employees: []
+  onQuarterEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  onNextQuarterStart:
+    m_PersistentCalls:
+      m_Calls: []

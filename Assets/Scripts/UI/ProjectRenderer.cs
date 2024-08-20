@@ -10,7 +10,7 @@ public class ProjectRenderer : MonoBehaviour
 
     [Header("Title")]
     [SerializeField] private TextMeshProUGUI nameLabel;
-    [SerializeField] private Image genreIcon, statusBackground, degradationBar;
+    [SerializeField] private Image genreIcon, statusBackground, degradationBar, titleBackground, background;
     [SerializeField] private TextMeshProUGUI statusLabel;
 
     [Header("Employees")]
@@ -36,6 +36,9 @@ public class ProjectRenderer : MonoBehaviour
     {
         nameLabel.text = project.displayName;
         degradationBar.enabled = false;
+
+        titleBackground.color = UIThemeManager.main.projectLevelTitleColors[project.level - 1];
+        background.sprite = UIThemeManager.main.projectLevelBackgrounds[project.level - 1];
 
         slotRoot.ClearChildren();
         slots.Clear();

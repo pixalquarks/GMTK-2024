@@ -11,8 +11,20 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public static GameManager main;
 
+    [Header("General Settings")]
     [SerializeField] private int money = 10000;
     [SerializeField] private int quarter = 1;
+
+    public float secondsPerQuarter = 50f;
+    public float difficultyPerQuarter = 0.25f;
+
+    public ProjectGenerator projectGenerator;
+    public EmployeeGenerator employeeGenerator;
+
+    //project spawning
+    [Header("Project Spawning")]
+    [Tooltip("Per Quarter")]
+    public int projectSpawnRate = 2;
 
     //game time. Different from global time.
     [ShowInInspector] private bool playing = true;
@@ -29,6 +41,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     [System.NonSerialized] [ShowInInspector, ReadOnly] public int quarterlySalary;
     [System.NonSerialized] [ShowInInspector, ReadOnly] public int quarterlyRevenue;
+    private float timePassed = 0;
+    private float projectSpawnTimer = 0;
 
     public QuarterEndEvent onQuarterEnd = new();
     public QuarterEndEvent onNextQuarterStart = new();
@@ -39,6 +53,8 @@ public class GameManager : MonoBehaviour
     public int Quarter => quarter;
     public bool IsPlaying => playing && !cutscene;
     public float GameSpeed => IsPlaying ? timeScale : 0;
+    public float QuarterFraction => timePassed / secondsPerQuarter;
+    public float ProjectSpawnFraction => projectSpawnTimer / secondsPerQuarter;
 
     private void Awake()
     {
@@ -48,11 +64,34 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         quarter = 1;
+        timePassed = 0;
+        projectGenerator.difficulty = 0;
+        projectSpawnTimer = secondsPerQuarter / projectSpawnRate * 0.5f;
+    }
+
+    private void Update() {
+        if (!IsPlaying) return;
+        float delta = Time.deltaTime * GameSpeed;
+
+        timePassed += delta;
+        projectGenerator.difficulty += delta * difficultyPerQuarter * (1f / secondsPerQuarter);
+        projectSpawnTimer += delta * projectSpawnRate;
+
+        if(projectSpawnTimer > secondsPerQuarter) {
+            projectSpawnTimer -= secondsPerQuarter;
+            SpawnNewProject();
+        }
+
+        if (timePassed > secondsPerQuarter) {
+            timePassed = secondsPerQuarter;
+            UpdateQuarter();
+        }
     }
 
     public void UpdateQuarter()
     {
         cutscene = true;
+        projectSpawnTimer = secondsPerQuarter / projectSpawnRate * 0.5f;
         StartCoroutine(IUpdateQuarter());
     }
 
@@ -70,6 +109,7 @@ public class GameManager : MonoBehaviour
         onQuarterEnd.Invoke(quarter);
 
         quarter++;
+        timePassed = 0;
 
         if (quarter > 4) {
             //todo event
@@ -107,6 +147,10 @@ public class GameManager : MonoBehaviour
         employees.Remove(employee);
         employee.OnFired();
         RecalculateSalary();
+    }
+
+    public void SpawnNewProject() {
+        //todo find distance and center
     }
 
     public void AddProject(Project project)
