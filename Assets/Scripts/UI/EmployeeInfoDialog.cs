@@ -46,6 +46,8 @@ public class EmployeeInfoDialog : MonoBehaviour
             Button b = c.GetChild(2).GetComponent<Button>();
             skillsetButtons[i] = b;
             b.onClick.AddListener(() => UpgradeSkill(ii));
+
+            if(i == 4) b.gameObject.SetActive(false);
         }
         init = true;
     }
@@ -66,15 +68,15 @@ public class EmployeeInfoDialog : MonoBehaviour
             float extra = employee.calculatedSkillBonus.GetValue(i);
             if(extra > 0.05f)
             {
-                s = $" <color=#00aa00>+{extra:F1}";
+                s = $" <color=#00aa00>+{extra:F2}";
             }
-            else if(extra < 0.05f)
+            else if(extra < -0.05f)
             {
-                s = $" <color=#aa0000>-{-extra:F1}";
+                s = $" <color=#aa0000>-{-extra:F2}";
             }
-            skillsetLabels[i].text = $"{v:F1}{s}";
+            skillsetLabels[i].text = $"{v:F2}{s}";
 
-            skillsetButtons[i].interactable = employee.SkillPoints > 0;
+            if(i != 4) skillsetButtons[i].interactable = employee.SkillPoints > 0;
             SetPoint(i, v);
         }
 

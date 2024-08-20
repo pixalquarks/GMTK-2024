@@ -219,6 +219,7 @@ public class Employee : MonoBehaviour
 
         //todo calculate trait
 
+        //Debug.Log($"a: {a} p: {p} s: {s} bonus: {bonus}");
         p += bonus;
         s += bonus;
         calculatedSkillBonus.ability = a;
