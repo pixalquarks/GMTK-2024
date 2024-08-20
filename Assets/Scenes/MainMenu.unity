@@ -229,6 +229,7 @@ MonoBehaviour:
   mainMenuCanvas: {fileID: 1578153544}
   optionsCanvas: {fileID: 1701171669}
   canvasAnimator: {fileID: 950177126}
+  volume: {fileID: 1786710006}
 --- !u!4 &61756791
 Transform:
   m_ObjectHideFlags: 0
