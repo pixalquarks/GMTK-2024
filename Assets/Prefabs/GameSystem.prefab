@@ -228,11 +228,16 @@ MonoBehaviour:
     clamp: 1.8
     offset: 2
   baseTeamSize: 2
+  teamSizeOffset:
+    start: 0
+    scale: 0.2
+    clamp: 3
+    offset: 2
   maxTeamSize:
     start: 2
     scale: 0.8
     clamp: 15
-    offset: 1
+    offset: 0
   introduceArtistDifficulty: 1.5
   requireArtistDifficulty: 3
   requiredArtistPercentage:
