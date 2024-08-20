@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
-using DG.Tweening;
 using Random = UnityEngine.Random;
 
 namespace GMTK_2024
@@ -20,11 +19,13 @@ namespace GMTK_2024
         [SerializeField] private AudioSource uiAudioSource;
         [SerializeField] private AudioSource sfxAudioSource;
 
+        [SerializeField] private AudioMixer masterMixer;
+        [SerializeField] private float musicFadeTime = 5.0f;
+        [SerializeField] private bool playRandomMusicOnNext = true;
+        [SerializeField] private bool preserveMusicOnSceneLoad = true;
         [SerializeField] private M_AudioClip[] musicAudioClips;
         [SerializeField] private M_AudioClip[] sfxAudioClips;
 
-        [SerializeField] private AudioMixer masterMixer;
-        [SerializeField] private float musicFadeTime = 5.0f;
 
         private List<M_AudioClip> _menuClips;
         private List<M_AudioClip> _levelClips;
@@ -36,6 +37,8 @@ namespace GMTK_2024
         private Scene _lastScene;
 
         private Dictionary<string, M_AudioClip> _nameToClipMapping;
+
+        private Queue<AudioClip> playNextQueue = new Queue<AudioClip>();
 
         private void Awake()
         {
@@ -74,6 +77,7 @@ namespace GMTK_2024
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
+            if (!preserveMusicOnSceneLoad) return;
             if (scene != _lastScene)
             {
                 if (_currentTriggerCoroutine != null)
@@ -101,16 +105,20 @@ namespace GMTK_2024
         {
             const int mainMenuIndex = 0;
             var index = SceneManager.GetActiveScene().buildIndex;
-            Debug.Log("Scene Count: " + SceneManager.sceneCountInBuildSettings);
-            Debug.Log("Active Scene: " + index);
             if (index == mainMenuIndex)
             {
                 foreach (var track in _tracks)
                 {
                     track.Stop();
                 }
-                _tracks[_currentTrackIndex].clip = GetClipByName("MainMenu");
+                _tracks[_currentTrackIndex].clip = GetClipByName("Bossa Nova");
                 _tracks[_currentTrackIndex].Play();
+                if (!playRandomMusicOnNext)
+                {
+                    Debug.Log("Playing Bossa Loop");
+                    QueuePlayNext("Bossa Loop");
+                    StartCoroutine(TriggerPlayNext(_tracks[_currentTrackIndex].clip.length));
+                }
             }
             else if (index == SceneManager.sceneCountInBuildSettings - 1)
             {
@@ -119,9 +127,19 @@ namespace GMTK_2024
             }
             else
             {
-                var clip = GetRandomLevelClip();
-                _currentTriggerCoroutine = StartCoroutine(TriggerFadeOnMusicEnd(clip.length));
-                FadeBetweenTrack(clip);
+                AudioClip clip;
+                if (playRandomMusicOnNext)
+                {
+                    clip = GetRandomLevelClip();
+                    _currentTriggerCoroutine = StartCoroutine(TriggerFadeOnMusicEnd(clip.length));
+                    FadeBetweenTrack(clip);
+                }
+                else
+                {
+                    _tracks[_currentTrackIndex].Stop();
+                    _tracks[_currentTrackIndex].Play();
+                    StartCoroutine(TriggerPlayNext(_tracks[_currentTrackIndex].clip.length));
+                }
             }
         }
 
@@ -215,6 +233,26 @@ namespace GMTK_2024
             PlayDefaultMusic();
         }
 
+        private IEnumerator TriggerPlayNext(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            Debug.Log("Playing");
+            PlayDefaultMusic();
+            if (playNextQueue.Count > 0)
+            {
+                var clip = playNextQueue.Dequeue();
+                _tracks[_currentTrackIndex].clip = clip;
+                _tracks[_currentTrackIndex].Play();
+                StartCoroutine(TriggerPlayNext(_tracks[_currentTrackIndex].clip.length));
+            }
+            else
+            {
+                _tracks[_currentTrackIndex].Stop();
+                _tracks[_currentTrackIndex].Play();
+                StartCoroutine(TriggerPlayNext(_tracks[_currentTrackIndex].clip.length));
+            }
+        }
+
         public void PlayUIHoverSound()
         {
             const string sfxName = "UIHover";
@@ -242,6 +280,12 @@ namespace GMTK_2024
             {
                 sfxAudioSource.PlayOneShot(clip);
             }
+        }
+
+        public void QueuePlayNext(string audioClipName)
+        {
+            var clip = GetClipByName(audioClipName);
+            playNextQueue.Enqueue(GetClipByName(audioClipName));
         }
     }
 }
