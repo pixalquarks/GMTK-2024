@@ -13,6 +13,9 @@ public class EmployeeRenderer : MonoBehaviour
     [SerializeField] private Image roleIcon;
     [SerializeField] private Image typeIcon;
 
+    [SerializeField] private Image torso;
+    [SerializeField] private Image[] heads = { };
+
     private void Start()
     {
         levelLabel.text = $"LV{employee.Level}";
@@ -21,6 +24,12 @@ public class EmployeeRenderer : MonoBehaviour
         roleIcon.sprite = UIThemeManager.main.GetRoleIcon(employee.role);
         typeIcon.sprite = employee.type.icon;
         typeIcon.color = employee.type.color;
+
+        int h = Random.Range(0, heads.Length);
+        for (int i = 0; i < heads.Length; i++)
+        {
+            heads[i].enabled = h == i;
+        }
 
         employee.onLevelUp.AddListener(UpdateLevel);
     }
