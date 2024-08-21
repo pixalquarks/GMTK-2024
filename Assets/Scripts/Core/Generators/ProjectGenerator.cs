@@ -18,6 +18,7 @@ public class ProjectGenerator : MonoBehaviour
     public DifficultyScale extraLoadMax = default;
 
     public int baseTeamSize = 2;
+    public float teamSizeToLoadOffset = -1f;
     public DifficultyScale teamSizeOffset = default;
     public DifficultyScale maxTeamSize = default;
     public float introduceArtistDifficulty = 1.5f;
@@ -75,7 +76,7 @@ public class ProjectGenerator : MonoBehaviour
         project.name = $"Project_{project.displayName}";
 
         int n = Random.Range(baseTeamSize, Mathf.RoundToInt(maxTeamSize.GetValue(difficulty))) + Mathf.RoundToInt(teamSizeOffset.GetValue(difficulty));
-        float revenue = n * revenuePerEmployee + baseRevenue;
+        float revenue = (n - baseTeamSize) * revenuePerEmployee + baseRevenue;
 
         //decide required roles
         int artists = 0;
@@ -99,8 +100,9 @@ public class ProjectGenerator : MonoBehaviour
         project.level = GetLevel(n);
 
         //decide load
-        float load = n + Random.Range(extraLoadMin.GetValue(difficulty), extraLoadMax.GetValue(difficulty)) * Random.Range(0.3f, 1f);
-        float loadOffset = load - n;
+        float loadOffset = Random.Range(extraLoadMin.GetValue(difficulty), extraLoadMax.GetValue(difficulty)) * Random.Range(0.3f, 1f);
+        float load = n + teamSizeToLoadOffset + loadOffset;
+        if (load < 0.8f) load = Random.Range(0.8f, 1.5f);
         Debug.Log($"loadoffset: {loadOffset}");
         if (loadOffset < 0) loadOffset *= 0.2f;
         revenue = Mathf.Max(revenue * 0.8f, loadOffset * revenuePerExtraLoad + revenue);
@@ -108,7 +110,6 @@ public class ProjectGenerator : MonoBehaviour
         project.requiredLoad = load;
         project.requiredProgress = baseRequiredProgress + (n - baseTeamSize) * progressPerEmployee;
 
-        Debug.Log(revenue);
         project.baseRevenue = Mathf.RoundToInt(revenue / 10f) * 10;
         project.initialCost = Mathf.RoundToInt(revenue * Random.Range(0.1f, initialCostPercentage.GetValue(difficulty)));
     }

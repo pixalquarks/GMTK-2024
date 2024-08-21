@@ -143,6 +143,19 @@ public class GameCursor : MonoBehaviour
         }
         else
         {
+            bool currentlyOverInfo = Physics2D.OverlapCircleNonAlloc(mousePos, 3f, tmpSingle, 1 << EMPLOYEE_INFO_LAYER) > 0;
+            bool invalidInfo = currentlyOverInfo && (infoDialog.employee == null || infoDialog.employee.killed);
+
+            if (invalidInfo)
+            {
+                currentlyOverInfo = false;
+            }
+
+            if (currentlyOverInfo)
+            {
+                return;
+            }
+
             if (Input.GetMouseButtonDown(0))
             {
                 Employee e = GethoveredEmployee(mousePos);
@@ -175,7 +188,7 @@ public class GameCursor : MonoBehaviour
                 }
                 else
                 {
-                    if(infoDialog.employee == null || infoDialog.employee.killed || Physics2D.OverlapCircleNonAlloc(mousePos, 3f, tmpSingle, 1 << EMPLOYEE_INFO_LAYER) == 0)
+                    if(invalidInfo || !currentlyOverInfo)
                     {
                         HideInfoPanel();
                     }

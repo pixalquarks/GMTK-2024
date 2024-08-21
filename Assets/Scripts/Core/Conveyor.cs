@@ -49,11 +49,11 @@ public class Conveyor : MonoBehaviour {
     {
         float dst = endPoint.position.x - startPoint.position.x;
         float d = 1f / belts;
-        Debug.Log("dst "+ dst);
+        //Debug.Log("dst "+ dst);
         for (int i = 0; i < belts; i++)
         {
             float offset = (d * i + beltProgression) % 1f;
-            Debug.Log($"{i} : {offset}");
+            //Debug.Log($"{i} : {offset}");
             Transform t = beltParent.GetChild(i);
             t.transform.position = startPoint.position + Vector3.right * offset * dst;
             if(offset < d * 0.5f)

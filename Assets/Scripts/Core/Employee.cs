@@ -65,8 +65,10 @@ public class Employee : MonoBehaviour
 
     #region events
     public LevelUpEvent onLevelUp = new();
+    public StatUpdateEvent onStatsChange = new();
 
     [System.Serializable] public class LevelUpEvent : UnityEvent { }
+    [System.Serializable] public class StatUpdateEvent : UnityEvent { }
     #endregion
 
     private void Start()
@@ -77,13 +79,21 @@ public class Employee : MonoBehaviour
 
     public int GetSalary()
     {
-        int multiplier = level == 3 ? 5 : level == 2 ? 2 : 1;
-        return multiplier * baseSalary;
+        float multiplier = level == 3 ? 3 : level == 2 ? 1.5f : 1;
+        return Mathf.RoundToInt(multiplier * baseSalary);
     }
 
     public int GetRequiredExp()
     {
-        return 100 + (200 <<  level);
+        switch (level)
+        {
+            case 3:
+                return 6500;
+            case 2:
+                return 1000;
+            default:
+                return 250;
+        }
     }
 
     public bool CanBePicked() {
@@ -162,6 +172,17 @@ public class Employee : MonoBehaviour
         level = l;
     }
 
+    public bool CanSpendSkillPoint(int id) {
+        return SkillPoints >= 1 && baseSkillset.GetValue(id) < 4.05f;
+    }
+
+    public bool HasUnspentSkillPoints() {
+        for(int i = 0; i < 5; i++) {
+            if(CanSpendSkillPoint(i)) return true;
+        }
+        return false;
+    }
+
     public void SpendSkillPoint(int id)
     {
         switch (id)
@@ -234,6 +255,7 @@ public class Employee : MonoBehaviour
         {
             EmployeeInfoDialog.main.Rebuild();
         }
+        onStatsChange.Invoke();
     }
 
     public float GetLoad()
@@ -243,11 +265,11 @@ public class Employee : MonoBehaviour
 
     public float GetBonusSpeed()
     {
-        return SkillSpeed * 0.05f;
+        return SkillSpeed * 0.1f + (SkillSpeed > 3f ? (SkillSpeed - 3f) * 0.05f : 0f);
     }
 
     public float GetBonusRevenue()
     {
-        return SkillPassion * 0.05f;
+        return SkillPassion * 0.05f + (SkillPassion > 3f ? (SkillPassion - 3f) * 0.03f : 0f);
     }
 }

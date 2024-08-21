@@ -76,6 +76,7 @@ public class Project : MonoBehaviour
     #region events
     public StatusUpdateEvent onStatusChanged = new();
     public EmployeeUpdateEvent onEmployeeChanged = new();
+    public UnityEvent onLoadChanged = new();
 
     [System.Serializable]
     public class StatusUpdateEvent : UnityEvent { }
@@ -137,7 +138,6 @@ public class Project : MonoBehaviour
         else artistCount++;
         RecalculateLoad();
         employee.OnProjectJoined();
-        prenderer.SortEmployees();
         onEmployeeChanged.Invoke();
     }
 
@@ -150,7 +150,6 @@ public class Project : MonoBehaviour
         if (employee.role == Employee.EmployeeRole.Programmer) programmerCount--;
         else artistCount--;
         RecalculateLoad();
-        prenderer.SortEmployees();
         onEmployeeChanged.Invoke();
     }
 
@@ -167,6 +166,7 @@ public class Project : MonoBehaviour
         }
 
         GameManager.main.RecalculateRevenue();
+        onLoadChanged.Invoke();
     }
 
     private void Kill()
