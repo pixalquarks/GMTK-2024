@@ -13,6 +13,8 @@ public class EmployeeRenderer : MonoBehaviour
     [SerializeField] private Image roleIcon;
     [SerializeField] private Image typeIcon;
 
+    [SerializeField] private GameObject levelupIndicator;
+
     [SerializeField] private Image torso;
     [SerializeField] private Image[] heads = { };
 
@@ -43,13 +45,21 @@ public class EmployeeRenderer : MonoBehaviour
         headMat.SetFloat("_HueChange", Random.Range(0, 360f));
         torsoMat.SetFloat("_HueChange", Random.Range(0, 360f));
 
+        CheckLevelIndicator();
         employee.onLevelUp.AddListener(UpdateLevel);
+        employee.onStatsChange.AddListener(CheckLevelIndicator);
     }
 
     private void UpdateLevel()
     {
         levelLabel.text = $"LV{employee.Level}";
         levelLabel.color = UIThemeManager.main.levelColors[employee.Level - 1];
+
+        CheckLevelIndicator();
+    }
+
+    private void CheckLevelIndicator() {
+        levelupIndicator.SetActive(employee.HasUnspentSkillPoints());
     }
 
     private void OnDestroy()

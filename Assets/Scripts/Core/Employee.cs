@@ -65,8 +65,10 @@ public class Employee : MonoBehaviour
 
     #region events
     public LevelUpEvent onLevelUp = new();
+    public StatUpdateEvent onStatsChange = new();
 
     [System.Serializable] public class LevelUpEvent : UnityEvent { }
+    [System.Serializable] public class StatUpdateEvent : UnityEvent { }
     #endregion
 
     private void Start()
@@ -174,6 +176,13 @@ public class Employee : MonoBehaviour
         return SkillPoints >= 1 && baseSkillset.GetValue(id) < 4.05f;
     }
 
+    public bool HasUnspentSkillPoints() {
+        for(int i = 0; i < 5; i++) {
+            if(CanSpendSkillPoint(i)) return true;
+        }
+        return false;
+    }
+
     public void SpendSkillPoint(int id)
     {
         switch (id)
@@ -246,6 +255,7 @@ public class Employee : MonoBehaviour
         {
             EmployeeInfoDialog.main.Rebuild();
         }
+        onStatsChange.Invoke();
     }
 
     public float GetLoad()

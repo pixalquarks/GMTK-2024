@@ -1757,9 +1757,10 @@ MonoBehaviour:
   extraLoadMax:
     start: 1.1
     scale: 0.03
-    clamp: 1.8
+    clamp: 3
     offset: 2
   baseTeamSize: 2
+  teamSizeToLoadOffset: -1
   teamSizeOffset:
     start: 0
     scale: 0.2
