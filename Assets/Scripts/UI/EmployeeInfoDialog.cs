@@ -79,7 +79,7 @@ public class EmployeeInfoDialog : MonoBehaviour
             }
             skillsetLabels[i].text = $"{v:F2}{s}";
 
-            if(i != 4) skillsetButtons[i].interactable = employee.SkillPoints > 0;
+            if(i != 4) skillsetButtons[i].interactable = employee.CanSpendSkillPoint(i);
             SetPoint(i, v);
         }
 
@@ -102,7 +102,7 @@ public class EmployeeInfoDialog : MonoBehaviour
 
     private void UpgradeSkill(int ii)
     {
-        if(employee.SkillPoints > 0)
+        if(employee.CanSpendSkillPoint(ii))
         {
             employee.SpendSkillPoint(ii);
         }

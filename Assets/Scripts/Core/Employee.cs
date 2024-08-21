@@ -170,6 +170,10 @@ public class Employee : MonoBehaviour
         level = l;
     }
 
+    public bool CanSpendSkillPoint(int id) {
+        return SkillPoints >= 1 && baseSkillset.GetValue(id) < 4.05f;
+    }
+
     public void SpendSkillPoint(int id)
     {
         switch (id)
